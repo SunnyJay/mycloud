@@ -1,0 +1,5 @@
+rootProject.name = 'tangyuan'
+
+include 'service-user'
+include 'service-kubernetes'
+

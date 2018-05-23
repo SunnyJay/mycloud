@@ -1,0 +1,54 @@
+<!--logs.wxml-->
+
+<text>杀杀杀</text>
+<view class="section">
+  <textarea bindblur="bindTextAreaBlur" auto-height placeholder="自动变高" />
+</view>
+<view class="section">
+  <input placeholder="这是一个可以自动聚焦的input" auto-focus/>
+</view>
+<view class="section">
+  <input type="idcard" placeholder="身份证输入键盘" />
+</view>
+<view class="section">
+  <input type="digit" placeholder="带小数点的数字键盘"/>
+</view>
+
+<view style="background:red">1</view>
+<view style="">2</view>
+<view style="">3</view>
+
+<icon type="success" size="40" color="red"/>
+<icon type="search" size="40" color="blue"/>
+
+<view class="section">
+  <view class="section__title">普通选择器</view>
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{logs}}">
+    <view class="picker">
+      当前选择：{{array[index]}}
+    </view>
+  </picker>
+</view>
+
+<view class="section">
+  <view class="section__title">日期选择器</view>
+  <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+    <view class="picker">
+      当前选择: {{date}}
+    </view>
+  </picker>
+</view>
+
+
+
+<button type='default' size='mini'>提交</button>
+<button  type='primary'>提交</button>
+<view class="container log-list">
+  <block wx:for="{{logs}}" wx:for-item="log">
+    <text class="log-item">{{index + 1}}. {{log}}</text>
+  </block>
+</view>
+<image mode="widthFix" src="{{src}}"></image>
+<button type="primary" bindtap="takePhoto">拍照</button>
+<camera device-position="back" flash="auto" binderror="错误" style="width: 100%; height: 300px;"></camera>
+

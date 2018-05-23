@@ -1,0 +1,11 @@
+<text>我的云产品</text>
+<scroll-view class='block_2' scroll-y  bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" 
+scroll-top="{{scrollTop}}" >
+<block wx:for="{{productList}}">
+ <navigator url="../{{item.id}}/{{item.id}}">
+<view id="green" class='block'>
+    <text>AAA</text>
+    </view>
+    </navigator>
+</block>
+  </scroll-view>

@@ -1,0 +1,23 @@
+<!--pages/console/console.wxml-->
+
+<swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+
+
+<scroll-view class='block_2' scroll-y  bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" 
+scroll-top="{{scrollTop}}" >
+<block wx:for="{{controlList}}">
+ <navigator url="../{{item.id}}/{{item.id}}">
+<view id="green" class='block'>
+    <image style="width: 100px; height: 100px; " src='{{item.image}}'></image>
+    <text>{{item.title}}</text>
+    </view>
+    </navigator>
+</block>
+  </scroll-view>

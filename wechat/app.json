@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/console/console",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/login/login",
+    "pages/manage/manage",
+    "pages/user/user",
+    "pages/server/server"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "小汤圆云",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/console/console",
+        "text": "控制台"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的云产品"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "账户"
+      }
+    ]
+  }
+}

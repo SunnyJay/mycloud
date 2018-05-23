@@ -1,0 +1,22 @@
+.manage_body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user_logo_block{
+  height:300rpx;
+  width: 100%;
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu{
+  height:100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -1,0 +1,54 @@
+<view class='body'>
+  <view class="section">
+    <text class="section__title">CPU(核)</text>
+    <view class="body-view">
+      <slider bindchange="slider4change" min="1" max="4" show-value step="1" />
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section__title">内存(G)</text>
+    <view class="body-view">
+      <slider bindchange="slider4change" min="1" max="4" show-value step="1" />
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section__title">硬盘(G)</text>
+    <view class="body-view">
+      <slider bindchange="slider4change" min="10" max="40" show-value step="10" />
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section__title">带宽</text>
+    <view class="body-view">
+      <slider bindchange="slider4change" min="1" max="10" show-value step="1" />
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section__title">镜像</view>
+    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <view class="picker">
+        当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class='pass-view'>
+      <label>登录密码:</label>
+      <input password="true" class='pass-edit'></input>
+    </view>
+    <view class='pass-view'>
+      <label>确认密码:</label>
+      <input password="true" class='pass-edit'></input>
+    </view>
+  </view>
+
+  <view>
+  <button type='primary' class='create-button'>创建云主机</button>
+  </view>
+
+</view>

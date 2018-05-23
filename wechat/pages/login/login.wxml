@@ -1,0 +1,19 @@
+  <view class='login_body'>
+  <form bindsubmit='formSubmit' >
+
+  <view class='login'>
+    <label>手机号码:</label>
+    <input placeholder="请输入手机号码" auto-focus class="login-edit" name='phone'/>
+  </view>
+
+  <view class='login'>
+    <label>密码:</label>
+    <input type="text" placeholder="请输入密码" password="true" class="login-edit"  name='pass'/>
+  </view>
+
+  <button type='primary'form-type='submit' class='login_button'>开始</button>
+
+
+</form>
+
+</view>
