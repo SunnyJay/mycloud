@@ -31,6 +31,6 @@ spec:
   - port: 8899
     targetPort: 8899
     protocol: TCP
-    nodePort: 33333
+    nodePort: 32222
   selector:
     app: service-user
