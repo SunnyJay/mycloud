@@ -27,10 +27,10 @@ metadata:
   name: service-user-service
 spec:
   type: NodePort
-  port: 33333
   ports:
   - port: 8899
     targetPort: 8899
     protocol: TCP
+    nodePort: 33333
   selector:
     app: service-user
