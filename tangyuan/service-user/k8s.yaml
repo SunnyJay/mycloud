@@ -19,6 +19,9 @@ spec:
         image: registry.cn-hangzhou.aliyuncs.com/sunnanjun/mycloud
         ports:
         - containerPort: 8899
+      imagePullSecrets:
+            - name: registrykey-01
+
 
 ---
 apiVersion: v1
