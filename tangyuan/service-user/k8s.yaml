@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: service-user
-        image: registry.cn-hangzhou.aliyuncs.com/sunnanjun/mycloud
+        image: registry.cn-hangzhou.aliyuncs.com/sunnanjun/mycloud:latest
         ports:
         - containerPort: 8899
       imagePullSecrets:
