@@ -19,3 +19,18 @@ spec:
         image: registry.cn-hangzhou.aliyuncs.com/sunnanjun/mycloud
         ports:
         - containerPort: 8899
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-user-service
+spec:
+  type: NodePort
+  port: 33333
+  ports:
+  - port: 8899
+    targetPort: 8899
+    protocol: TCP
+  selector:
+    app: service-user
