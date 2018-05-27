@@ -1,4 +1,4 @@
-FROM java:9-jre
+FROM java:9
 MAINTAINER sunnnanjun
 
 ADD build/distributions/service-user-boot.tar /usr/local/
