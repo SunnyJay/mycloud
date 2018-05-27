@@ -1,4 +1,4 @@
-FROM java:9
+FROM sgrio/java-oracle
 MAINTAINER sunnnanjun
 
 ADD build/distributions/service-user-boot.tar /usr/local/
