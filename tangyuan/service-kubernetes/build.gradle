@@ -13,4 +13,4 @@ dependencies {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-mainClassName = "com.sunnanjun.KubernetesApplication"
+mainClassName = "com.tangyuan.KubernetesApplication"

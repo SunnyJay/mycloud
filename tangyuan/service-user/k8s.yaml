@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: service-user
-        image: registry.cn-hangzhou.aliyuncs.com/sunnanjun/mycloud:latest
+        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/mycloud:latest
         ports:
         - containerPort: 8899
         env:
         - name: MYSQL_ROOT_USER
           value: root
         - name: MYSQL_ROOT_PASSWORD
-          value: sunnanjun
+          value: tangyuan
         - name: MYSQL_SERVICE_HOST
           value: 10.103.57.8
         - name: MYSQL_SERVICE_PORT

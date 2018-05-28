@@ -2,4 +2,6 @@ rootProject.name = 'tangyuan'
 
 include 'service-user'
 include 'service-kubernetes'
+include 'service-monitor'
+include 'service-manage'
 

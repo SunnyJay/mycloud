@@ -30,4 +30,4 @@ dependencies {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-mainClassName = "com.sunnanjun.UserApplication"
+mainClassName = "com.tangyuan.UserApplication"

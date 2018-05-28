@@ -1,4 +1,4 @@
-group 'com.sunnanjun.tangyuan'
+group 'com.tangyuan.tangyuan'
 version '1.0-SNAPSHOT'
 
 subprojects {
@@ -8,10 +8,10 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'io.spring.dependency-management' //spring boot 2必须加这个
 
-
     sourceCompatibility = 1.8
 
     repositories {
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         mavenCentral()
     }
 
@@ -26,9 +26,6 @@ subprojects {
         compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0'
         compile group: 'javax.activation', name: 'activation', version: '1.1'
     }
-
-
-
 }
 
 
@@ -37,11 +34,13 @@ buildscript {
         springBootVersion = '2.0.1.RELEASE'
     }
     repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-
     }
 }
 
