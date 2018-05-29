@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: demo-deploment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: java-demo
+  template:
+    metadata:
+      labels:
+        app: java-demo
+    spec:
+      containers:
+      - name: java-demo
+        image: 10.4.201.194:5000/nanjun/java-demo:latest

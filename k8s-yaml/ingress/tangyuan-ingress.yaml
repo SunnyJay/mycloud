@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tangyuan-ingress
+  namespace: default
+
+spec:
+  rules:
+  - host: tangyuan.com
+    http:
+      paths:
+      - path: /tangyuan/user/
+        backend:
+          serviceName: service-tangyuan-user
+          servicePort: 8801
+      - path: /tangyuan/kubernetes
+        backend:
+          serviceName: service-tangyuan-kubernetes
+          servicePort: 8802
+      - path: /tangyuan/monitor
+        backend:
+          serviceName: service--tangyuan-monitor
+          servicePort: 8803
+      - path: /tangyuan/manage
+        backend:
+          serviceName: service-tangyuan-manage
+          servicePort: 8804
+ 
