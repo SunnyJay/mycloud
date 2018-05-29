@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * 作者：sunna
  * 时间: 2018/5/11 10:27
@@ -25,7 +23,7 @@ public class UserProductService
     public void addUserProduct(UserProduct userProduct)
     {
         Example<UserProduct> example = Example.of(userProduct);
-        Optional<UserProduct> opt = userProductRepository.findOne(example);
+        /*Optional<UserProduct> opt = userProductRepository.findOne(example);
         if (opt.isPresent())
         {
             logger.info("the user product has already exist!" , userProduct.getId());
@@ -33,6 +31,6 @@ public class UserProductService
         else
         {
             userProductRepository.save(userProduct);
-        }
+        }*/
     }
 }

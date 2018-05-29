@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 作者：sunna
  * 时间: 2018/5/11 11:22
  */
-@RequestMapping("monitor")
+@RequestMapping("tangyuan/monitor")
 @RestController
 public class MonitorContorller
 {

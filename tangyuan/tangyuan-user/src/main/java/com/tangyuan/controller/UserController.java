@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 作者：sunna
  * 时间: 2018/4/8 13:48
  */
+@RequestMapping("tangyuan/user")
 @RestController
 public class UserController
 {

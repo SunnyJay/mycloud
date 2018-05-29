@@ -8,11 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 
 /**
@@ -37,7 +34,8 @@ public class UserService
     public void addUser(User user)
     {
         Example<User> example = Example.of(user);
-        Optional<User> opt = userRepository.findOne(example);
+
+        /*Optional<User> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
             logger.info("the user has already exist!" , user.getUsername());
@@ -47,13 +45,13 @@ public class UserService
             BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(user.getPassword().trim()));
             userRepository.save(user);
-        }
+        }*/
     }
 
     public void deleteUser(User user)
     {
         Example<User> example = Example.of(user);
-        Optional<User> opt = userRepository.findOne(example);
+        /*Optional<User> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
             userRepository.delete(user);
@@ -61,14 +59,14 @@ public class UserService
         else
         {
             logger.info("the user is not exist!" , user.getUsername());
-        }
+        }*/
     }
 
     public User findUser(String userName)
     {
         User user = new User();
         user.setUsername(userName);
-        Example<User> example = Example.of(user);
+        /*Example<User> example = Example.of(user);
         Optional<User> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
@@ -78,7 +76,8 @@ public class UserService
         {
             logger.info("the user is not exist!" , user.getUsername());
             return null;
-        }
+        }*/
+        return null;
     }
 
     public User findUserByCode(String code)

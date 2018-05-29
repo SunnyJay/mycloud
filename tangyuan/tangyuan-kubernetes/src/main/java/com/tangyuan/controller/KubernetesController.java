@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * 作者：sunna
  * 时间: 2018/4/9 10:29
  */
-@RequestMapping("kubernetes")
+@RequestMapping("tangyuan/kubernetes")
 @RestController
 public class KubernetesController
 {
