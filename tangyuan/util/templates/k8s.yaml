@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-{{project_name}}-{{app_name}}
+  labels:
+    app: deployment-{{project_name}}-{{app_name}}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{project_name}}-{{app_name}}
+  template:
+    metadata:
+      labels:
+        app: {{project_name}}-{{app_name}}
+    spec:
+      containers:
+      - name: {{project_name}}-{{app_name}}
+        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/{{project_name}}-{{app_name}}:latest
+        ports:
+        - containerPort: {{app_port}}
+        env:
+        - name: MYSQL_ROOT_USER
+          value: root
+        - name: MYSQL_ROOT_PASSWORD
+          value: sunnanjun
+        - name: MYSQL_SERVICE_HOST
+          value: 10.107.251.149
+        - name: MYSQL_SERVICE_PORT
+          value: '3306'
+      imagePullSecrets:
+            - name: registrykey-01
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-{{project_name}}-{{app_name}}
+spec:
+  type: NodePort
+  ports:
+  - port: {{app_port}}
+    targetPort: {{app_port}}
+    protocol: TCP
+  selector:
+    app: {{project_name}}-{{app_name}}

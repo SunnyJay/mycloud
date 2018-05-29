@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-{{project_name}}-{{app_name}}
+  namespace: default
+spec:
+  rules:
+  - host: tangyuan.com
+    http:
+      paths:
+      - path: /{{project_name}}/{{app_name}}
+        backend:
+          serviceName: service-{{project_name}}-{{app_name}}
+          servicePort: {{app_port}}
+
