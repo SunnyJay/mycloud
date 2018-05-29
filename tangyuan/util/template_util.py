@@ -17,6 +17,7 @@ def get_template(searchpath, template_name):
 def render_template(app_list):
     for app_name in app_list:
         if app_name.startswith("tangyuan-"):
+            app_name = app_name.split("-")[1]
             app_port = random.randint(8800, 9000)
             render_dockerfile(app_name, app_port)
             render_k8s_yaml(app_name, app_port)
