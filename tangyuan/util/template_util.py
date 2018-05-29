@@ -33,9 +33,9 @@ def render_dockerfile(app_name, app_port):
 
 
 def output_file(render, dest, app_name):
-    if not os.path.exists(os.path.join("output", app_name)):
-        os.makedirs(os.path.join("output", app_name))
-    dest = os.path.join("output", app_name, dest)
+    if not os.path.exists(os.path.join("output", project_name + "-" + app_name)):
+        os.makedirs(os.path.join("output", project_name + "-"+app_name))
+    dest = os.path.join("output", project_name + "-" + app_name, dest)
     with codecs.open(dest, 'wb', encoding='utf-8') as fh:
         fh.write(render)
 
@@ -57,5 +57,5 @@ def render_ingress_yaml(app_name, app_port):
 
 
 if __name__ == '__main__':
-    #render_template(["user", "monitor"])
-     render_template(sys.argv[1:])
+    render_template(["tangyuan-user", "tangyuan-kubernetes"])
+    # render_template(sys.argv[1:])
