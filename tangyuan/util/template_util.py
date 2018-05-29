@@ -55,5 +55,5 @@ def render_ingress_yaml(app_name, app_port):
 
 
 if __name__ == '__main__':
-    render_template(["user", "monitor"])
-    # render_template(sys.argv)
+    #render_template(["user", "monitor"])
+     render_template(sys.argv)
