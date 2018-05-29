@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-tangyuan-user
+  name: deployment-tangyuan-kubernetes
   labels:
-    app: deployment-tangyuan-user
+    app: deployment-tangyuan-kubernetes
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tangyuan-user
+      app: tangyuan-kubernetes
   template:
     metadata:
       labels:
-        app: tangyuan-user
+        app: tangyuan-kubernetes
     spec:
       containers:
-      - name: tangyuan-user
-        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/tangyuan-user:latest
+      - name: tangyuan-kubernetes
+        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/tangyuan-kubernetes:latest
         ports:
         - containerPort: 8888
         env:
-        - name: MYSQL_ROOT_USER
+        - name: MYSQL_ROOT_kubernetes
           value: root
         - name: MYSQL_ROOT_PASSWORD
           value: sunnanjun
@@ -35,13 +35,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-tangyuan-user
+  name: service-tangyuan-kubernetes
 spec:
   type: NodePort
   ports:
-  - port: 8801
+  - port: 8802
     targetPort: 8888
     protocol: TCP
     nodePort: 32222
   selector:
-    app: tangyuan-user
+    app: tangyuan-kubernetes

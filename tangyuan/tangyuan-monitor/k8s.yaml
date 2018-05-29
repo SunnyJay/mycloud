@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-tangyuan-user
+  name: deployment-tangyuan-monitor
   labels:
-    app: deployment-tangyuan-user
+    app: deployment-tangyuan-monitor
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tangyuan-user
+      app: tangyuan-monitor
   template:
     metadata:
       labels:
-        app: tangyuan-user
+        app: tangyuan-monitor
     spec:
       containers:
-      - name: tangyuan-user
-        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/tangyuan-user:latest
+      - name: tangyuan-monitor
+        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/tangyuan-monitor:latest
         ports:
         - containerPort: 8888
         env:
-        - name: MYSQL_ROOT_USER
+        - name: MYSQL_ROOT_monitor
           value: root
         - name: MYSQL_ROOT_PASSWORD
           value: sunnanjun
@@ -35,13 +35,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-tangyuan-user
+  name: service-tangyuan-monitor
 spec:
   type: NodePort
   ports:
-  - port: 8801
+  - port: 8803
     targetPort: 8888
     protocol: TCP
     nodePort: 32222
   selector:
-    app: tangyuan-user
+    app: tangyuan-monitor
