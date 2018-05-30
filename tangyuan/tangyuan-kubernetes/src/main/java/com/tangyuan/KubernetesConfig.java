@@ -18,8 +18,9 @@ public class KubernetesConfig
     public KubernetesClient kubernetesClient()
     {
         //TODO 提取配置
-        String master = "http://17bf2f4c.ngrok.io";  // 配置为你的k8s集群的主节点地址
+        String master = "http://10.4.201.84:8001";  // 配置为你的k8s集群的主节点地址
         Config config = new ConfigBuilder()
+                .withNamespace("default")
                 .withMasterUrl(master)
                 .build();
 
