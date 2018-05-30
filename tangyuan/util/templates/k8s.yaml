@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{project_name}}-{{app_name}}
-        image: registry.cn-hangzhou.aliyuncs.com/tangyuan/{{project_name}}-{{app_name}}:latest
+        image: registry.cn-beijing.aliyuncs.com/tangyuan/{{project_name}}-{{app_name}}:latest
         ports:
         - containerPort: {{app_port}}
         env:
