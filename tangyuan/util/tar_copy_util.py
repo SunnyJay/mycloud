@@ -8,7 +8,7 @@ def copy_tar():
         if dir.startswith("tangyuan-"):
             src = os.path.join("..", dir, "build", "distributions", dir + ".tar")
             dest = os.path.join("output", dir, dir + ".tar")
-            if os.path.exists(src):
+            if os.path.exists(src) and os.path.exists(dest):
                 shutil.copy(src, dest)
 
 if __name__ == '__main__':
