@@ -57,5 +57,5 @@ def render_ingress_yaml(app_name, app_port):
 
 
 if __name__ == '__main__':
-    render_template(["tangyuan-user", "tangyuan-kubernetes"])
-    # render_template(sys.argv[1:])
+    # render_template(["tangyuan-user", "tangyuan-kubernetes"])
+    render_template(sys.argv[1:])
