@@ -29,7 +29,7 @@ spec:
         - name: MYSQL_SERVICE_PORT
           value: '3306'
         - name: APP_PORT
-          value: {{app_port}}
+          value: '{{app_port}}'
       imagePullSecrets:
             - name: registrykey-01
 
