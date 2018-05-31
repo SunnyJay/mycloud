@@ -20,14 +20,16 @@ spec:
         ports:
         - containerPort: {{app_port}}
         env:
-        - name: MYSQL_ROOT_USER
-          value: root
-        - name: MYSQL_ROOT_PASSWORD
-          value: sunnanjun
-#        - name: MYSQL_SERVICE_HOST
-#          value: 10.107.251.149
-#        - name: MYSQL_SERVICE_PORT
-#          value: '3306'
+        - name: MYSQL_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials
+              key: username
+        - name: MYSQL_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-credentials
+              key: password
         - name: APP_PORT
           value: '{{app_port}}'
       imagePullSecrets:

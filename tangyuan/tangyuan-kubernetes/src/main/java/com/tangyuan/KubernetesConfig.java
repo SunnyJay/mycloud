@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,11 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KubernetesConfig
 {
+    @Value("${k8s.url}")
+    private String master;
+
     @Bean
     public KubernetesClient kubernetesClient()
     {
-        //TODO 提取配置
-        String master = "http://10.4.201.84:8001";  // 配置为你的k8s集群的主节点地址
         Config config = new ConfigBuilder()
                 .withNamespace("default")
                 .withMasterUrl(master)
