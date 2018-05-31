@@ -24,10 +24,10 @@ spec:
           value: root
         - name: MYSQL_ROOT_PASSWORD
           value: sunnanjun
-        - name: MYSQL_SERVICE_HOST
-          value: 10.107.251.149
-        - name: MYSQL_SERVICE_PORT
-          value: '3306'
+#        - name: MYSQL_SERVICE_HOST
+#          value: 10.107.251.149
+#        - name: MYSQL_SERVICE_PORT
+#          value: '3306'
         - name: APP_PORT
           value: '{{app_port}}'
       imagePullSecrets:
