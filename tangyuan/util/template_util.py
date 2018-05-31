@@ -20,7 +20,8 @@ def render_template(app_list):
             app_name = app_name.split("-")[1]
             app_port = random.randint(8800, 9000)
             render_dockerfile(app_name, app_port)
-            render_k8s_yaml(app_name, app_port)
+            render_k8s_service_yaml(app_name, app_port)
+            render_k8s_deployment_yaml(app_name, app_port)
             render_ingress_yaml(app_name, app_port)
 
 
@@ -40,12 +41,19 @@ def output_file(render, dest, app_name):
         fh.write(render)
 
 
-def render_k8s_yaml(app_name, app_port):
-    template = get_template("templates", "k8s.yaml")
+def render_k8s_service_yaml(app_name, app_port):
+    template = get_template("templates", "k8s-service.yaml")
     render = template.render(project_name=project_name,
                              app_name=app_name,
                              app_port=app_port)
-    output_file(render, "k8s.yaml", app_name)
+    output_file(render, "k8s-service.yaml", app_name)
+
+def render_k8s_deployment_yaml(app_name, app_port):
+    template = get_template("templates", "k8s-deployment.yaml")
+    render = template.render(project_name=project_name,
+                             app_name=app_name,
+                             app_port=app_port)
+    output_file(render, "k8s-deployment.yaml", app_name)
 
 
 def render_ingress_yaml(app_name, app_port):
