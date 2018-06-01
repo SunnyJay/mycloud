@@ -46,4 +46,10 @@ public class KubernetesController
     {
         return kubernetesService.getNameSpaceInfo(namespaceName);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    public String test()
+    {
+        return "test ok!";
+    }
 }

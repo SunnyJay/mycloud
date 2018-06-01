@@ -24,4 +24,9 @@ public class MonitorContorller
         return monitorService.getPodInfo(podName);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    public String test()
+    {
+        return "test ok!";
+    }
 }
