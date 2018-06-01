@@ -35,6 +35,10 @@ subprojects {
 
 
     }
+    applicationDefaultJvmArgs = [
+            "-Dspring.profiles.active=${project.gradle.startParameter.systemPropertiesArgs['spring.profiles.active']}"
+    ]
+
 }
 
 
