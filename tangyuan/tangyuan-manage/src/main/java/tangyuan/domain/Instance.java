@@ -18,12 +18,14 @@ public class Instance
     @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
+    //TODO 加入校验
     private String name;
 
     private String type;
 
     private String ip;
 
+    //TODO 修改字段类型
     private String createTime;
 
     private String userId;

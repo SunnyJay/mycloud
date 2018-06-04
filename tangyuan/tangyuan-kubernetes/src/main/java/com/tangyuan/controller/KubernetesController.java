@@ -16,35 +16,34 @@ public class KubernetesController
     @Autowired
     private KubernetesService kubernetesService;
 
-
-    @RequestMapping(method = RequestMethod.GET, value = "/get_pod_info/{pod_name}")
-    public String getPodInfo(@PathVariable("pod_name")String podName)
+    @RequestMapping(method = RequestMethod.GET, value = "/pods/{name}")
+    public String getPod(@PathVariable("name")String name)
     {
-        return kubernetesService.getPodInfo(podName);
+        return kubernetesService.getPod(name);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_pod_list")
+    @RequestMapping(method = RequestMethod.GET, value = "/pods")
     public String getPodList()
     {
         return kubernetesService.getPodList();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/create_namespace/{namespace_info}")
-    public void createNamespace(@PathVariable("namespace_info")String nameSpaceInfo)
+    @RequestMapping(method = RequestMethod.POST, value = "/namespaces")
+    public void addNamespace(@RequestBody String nameSpace)
     {
-        kubernetesService.createNamespace(nameSpaceInfo);
+        kubernetesService.addNamespace(nameSpace);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_namespace_list")
+    @RequestMapping(method = RequestMethod.GET, value = "/namespaces")
     public String getNameSpaceList()
     {
         return kubernetesService.getNameSpaceList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_namespace_info/{namespace_name}")
-    public String getNameSpaceInfo(@PathVariable("namespace_name")String namespaceName)
+    @RequestMapping(method = RequestMethod.GET, value = "/namespaces/{name}")
+    public String getNameSpace(@PathVariable("name")String name)
     {
-        return kubernetesService.getNameSpaceInfo(namespaceName);
+        return kubernetesService.getNameSpace(name);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/test")
@@ -53,41 +52,41 @@ public class KubernetesController
         return "test ok!";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_node_status")
-    public String getNodeStatus()
+    @RequestMapping(method = RequestMethod.GET, value = "/node_status")
+    public String getNodeStatusList()
     {
-        return kubernetesService.getNodeStatus();
+        return kubernetesService.getNodeStatusList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_deployment_list")
+    @RequestMapping(method = RequestMethod.GET, value = "/deployments")
     public String getDeploymentList()
     {
         return kubernetesService.getDeploymentList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_service_list")
+    @RequestMapping(method = RequestMethod.GET, value = "/services")
     public String getServiceList()
     {
         return kubernetesService.getServiceList();
     }
 
     //重要，JSON不能作为PathVariable，只能作为body中的内容
-    @RequestMapping(value = "/add_deployment")
-    public void addDeployment(@RequestBody String deploymentInfo)
+    @RequestMapping(method = RequestMethod.POST, value = "/deployments")
+    public void addDeployment(@RequestBody String deployment)
     {
-        kubernetesService.addDeployment(deploymentInfo);
+        kubernetesService.addDeployment(deployment);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_deployment_info/{deployment_name}")
-    public String getDeploymentInfo(@PathVariable("deployment_name")String deploymentName)
+    @RequestMapping(method = RequestMethod.GET, value = "/deployments/{name}")
+    public String getDeployment(@PathVariable("name")String name)
     {
-        return kubernetesService.getDeploymentInfo(deploymentName);
+        return kubernetesService.getDeployment(name);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/delete_deployment/{deployment_name}")
-    public void deleteDeployment(@PathVariable("deployment_name")String deploymentName)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deployments/{name}")
+    public void deleteDeployment(@PathVariable("name")String name)
     {
-        kubernetesService.deleteDeployment(deploymentName);
+        kubernetesService.deleteDeployment(name);
     }
 }
 

@@ -26,7 +26,7 @@ public class KubernetesService
     @Autowired
     private KubernetesClient client;
 
-    public String getPodInfo(String podId)
+    public String getPod(String podId)
     {
 
         Pod pod = client.pods().inNamespace("default").withName(podId).get();
@@ -57,7 +57,7 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public void createNamespace(String nameSpaceInfo)
+    public void addNamespace(String nameSpaceInfo)
     {
         Map<String, String> map = new Gson().fromJson(nameSpaceInfo, Map.class);
         client.namespaces().createNew()
@@ -86,13 +86,13 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public String getNameSpaceInfo(String namespaceName)
+    public String getNameSpace(String namespaceName)
     {
         Namespace namespace = client.namespaces().withName(namespaceName).get();
         return new Gson().toJson(namespace);
     }
 
-    public String getNodeStatus()
+    public String getNodeStatusList()
     {
         List<Map<String, String>> nodeStatusList = Lists.newArrayList();
         List<Node> nodeList = client.nodes().list().getItems();
@@ -203,7 +203,7 @@ public class KubernetesService
     }
 
 
-    public String getDeploymentInfo(String deploymentName)
+    public String getDeployment(String deploymentName)
     {
         Deployment deployment =
                 client.extensions().deployments().inNamespace("default").withName(deploymentName).get();

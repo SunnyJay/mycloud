@@ -10,18 +10,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 作者：sunna
  * 时间: 2018/5/28 17:09
  */
-@FeignClient(name="demo1", url = "${tangyuan-kubernetes.url}/tangyuan/kubernetes")
+@FeignClient(name="manage", url = "${tangyuan-kubernetes.url}/tangyuan/kubernetes")
 public interface KubernetesService
 {
-    @RequestMapping(method = RequestMethod.GET, value = "/get_pod_list")
+    @RequestMapping(method = RequestMethod.GET, value = "/pods")
     String getPodList();
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_pod_info/{pod_name}")
-    String getPodInfo(@PathVariable("pod_name") String podName);
+    @RequestMapping(method = RequestMethod.GET, value = "/pods/{name}")
+    String getPod(@PathVariable("name") String name);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/add_deployment/")
-    void addDeployment(@RequestBody String deploymentInfo);
+    @RequestMapping(method = RequestMethod.POST, value = "/deployments")
+    void addDeployment(@RequestBody String deployment);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_deployment_info/{deployment_name}")
-    String getDeploymentInfo(@PathVariable("deployment_name")String deploymentName);
+    @RequestMapping(method = RequestMethod.GET, value = "/deployments/{name}")
+    String getDeployment(@PathVariable("name")String name);
+
+
 }

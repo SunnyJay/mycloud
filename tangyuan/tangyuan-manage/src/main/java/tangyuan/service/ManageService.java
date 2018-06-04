@@ -28,20 +28,20 @@ public class ManageService
         return new Gson().toJson(instanceRepository.findAll());
     }
 
-    public void addInstance(Instance instance)
+    public Instance addInstance(Instance instance)
     {
         kubernetesService.addDeployment(JSON.toJSONString(instance));
 
-        String deploymentInfo = kubernetesService.getDeploymentInfo(instance.getId());
+        String deploymentInfo = kubernetesService.getDeployment(instance.getId());
         JSONObject jsonObject = JSONObject.parseObject(deploymentInfo);
         String ip = jsonObject.getString("ip");
         instance.setIp(ip);
         instance.setStatus("running");
 
-        instanceRepository.save(instance);
+        return instanceRepository.save(instance);
     }
 
-    public String getInstanceInfo(String id)
+    public String getInstanceOne(String id)
     {
         Instance instance = instanceRepository.findOne(id);
         return JSONObject.toJSONString(instance);
@@ -52,16 +52,9 @@ public class ManageService
         instanceRepository.delete(id);
     }
 
-    public void updateInstance(String id, Instance instance)
+    public Instance updateInstance(String id, Instance instance)
     {
         instance.setId(id);
-        instanceRepository.save(instance);
-    }
-
-    public void stopInstance(String id)
-    {
-        Instance instance = instanceRepository.findOne(id);
-        instance.setStatus("stop");
-        instanceRepository.save(instance);
+        return instanceRepository.save(instance);
     }
 }
