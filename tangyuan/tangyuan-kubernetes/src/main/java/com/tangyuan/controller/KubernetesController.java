@@ -52,4 +52,43 @@ public class KubernetesController
     {
         return "test ok!";
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_node_status")
+    public String getNodeStatus()
+    {
+        return kubernetesService.getNodeStatus();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_deployment_list")
+    public String getDeploymentList()
+    {
+        return kubernetesService.getDeploymentList();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_service_list")
+    public String getServiceList()
+    {
+        return kubernetesService.getServiceList();
+    }
+
+    //重要，JSON不能作为PathVariable，只能作为body中的内容
+    @RequestMapping(value = "/add_deployment")
+    public void addDeployment(@RequestBody String deploymentInfo)
+    {
+        kubernetesService.addDeployment(deploymentInfo);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_deployment_info/{deployment_name}")
+    public String getDeploymentInfo(@PathVariable("deployment_name")String deploymentName)
+    {
+        return kubernetesService.getDeploymentInfo(deploymentName);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/delete_deployment/{deployment_name}")
+    public void deleteDeployment(@PathVariable("deployment_name")String deploymentName)
+    {
+        kubernetesService.deleteDeployment(deploymentName);
+    }
 }
+
+
