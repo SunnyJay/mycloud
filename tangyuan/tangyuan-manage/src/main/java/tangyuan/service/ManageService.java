@@ -2,6 +2,7 @@ package tangyuan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.exception.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,18 @@ public class ManageService
         return instanceRepository.findAll();
     }
 
-    public Instance addInstance(Instance instance)
-    {
-        kubernetesService.addDeployment(JSON.toJSONString(instance));
+    public Instance addInstance(Instance instance) throws InternalServerException {
 
-        String deploymentInfo = kubernetesService.getDeployment(instance.getId());
+        String deploymentInfo;
+        try
+        {
+            kubernetesService.addDeployment(JSON.toJSONString(instance));
+            deploymentInfo = kubernetesService.getDeployment(instance.getId());
+        }
+        catch (Exception e)
+        {
+            throw new InternalServerException(e.getMessage());
+        }
 
         JSONObject jsonObject = JSONObject.parseObject(deploymentInfo);
         String ip = jsonObject.getString("ip");

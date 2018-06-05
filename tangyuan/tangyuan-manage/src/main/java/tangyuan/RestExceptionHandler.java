@@ -1,5 +1,8 @@
-package com.tangyuan.exception;
+package tangyuan;
 
+import com.tangyuan.exception.InternalServerException;
+import com.tangyuan.exception.NotFoundException;
+import com.tangyuan.exception.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
