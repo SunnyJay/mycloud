@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.tangyuan.exception.InternalServerException;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,15 +59,16 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public void addNamespace(String nameSpaceInfo)
+    public String addNamespace(String nameSpace)
     {
-        Map<String, String> map = new Gson().fromJson(nameSpaceInfo, Map.class);
-        client.namespaces().createNew()
+        JSONObject obj = JSONObject.parseObject(nameSpace);
+        Namespace namespace = client.namespaces().createNew()
                 .withNewMetadata()
-                .withName(map.get("name"))
+                .withName(obj.getString("name"))
                 .addToLabels("a", "label")
                 .endMetadata()
                 .done();
+        return JSONObject.toJSONString(namespace);
     }
 
     public String getNameSpaceList()
@@ -162,7 +165,7 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public void addDeployment(String deploymentInfo)
+    public String addDeployment(String deploymentInfo) throws InternalServerException
     {
         JSONObject jsonObject = JSON.parseObject(deploymentInfo);
 
@@ -199,7 +202,15 @@ public class KubernetesService
                 .endSpec()
                 .build();
 
-        client.extensions().deployments().inNamespace("default").create(deployment);
+        try
+        {
+            Deployment ret = client.extensions().deployments().inNamespace("default").create(deployment);
+            return JSONObject.toJSONString(ret);
+        }
+        catch (KubernetesClientException e)
+        {
+            throw new InternalServerException("Deployment " + deploymentName +" 创建失败");
+        }
     }
 
 

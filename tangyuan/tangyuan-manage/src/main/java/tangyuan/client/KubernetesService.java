@@ -1,10 +1,7 @@
 package tangyuan.client;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 作者：sunna
@@ -13,17 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name="manage", url = "${tangyuan-kubernetes.url}/tangyuan/kubernetes")
 public interface KubernetesService
 {
-    @RequestMapping(method = RequestMethod.GET, value = "/pods")
+    @GetMapping(value = "/pods")
     String getPodList();
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pods/{name}")
+    @GetMapping(value = "/pods/{name}")
     String getPod(@PathVariable("name") String name);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/deployments")
+    @GetMapping(value = "/deployments")
     void addDeployment(@RequestBody String deployment);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/deployments/{name}")
+    @GetMapping(value = "/deployments/{name}")
     String getDeployment(@PathVariable("name")String name);
-
-
 }

@@ -1,5 +1,7 @@
 package com.tangyuan.controller;
 
+import com.tangyuan.exception.InternalServerException;
+import com.tangyuan.exception.Result;
 import com.tangyuan.service.KubernetesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,74 +18,74 @@ public class KubernetesController
     @Autowired
     private KubernetesService kubernetesService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pods/{name}")
+    @GetMapping(value = "/pods/{name}")
     public String getPod(@PathVariable("name")String name)
     {
         return kubernetesService.getPod(name);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pods")
+    @GetMapping(value = "/pods")
     public String getPodList()
     {
         return kubernetesService.getPodList();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/namespaces")
-    public void addNamespace(@RequestBody String nameSpace)
+    @PostMapping(value = "/namespaces")
+    public String addNamespace(@RequestBody String nameSpace)
     {
-        kubernetesService.addNamespace(nameSpace);
+        return kubernetesService.addNamespace(nameSpace);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/namespaces")
+    @GetMapping(value = "/namespaces")
     public String getNameSpaceList()
     {
         return kubernetesService.getNameSpaceList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/namespaces/{name}")
+    @GetMapping(value = "/namespaces/{name}")
     public String getNameSpace(@PathVariable("name")String name)
     {
         return kubernetesService.getNameSpace(name);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    @GetMapping(value = "/test")
     public String test()
     {
         return "test ok!";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/node_status")
+    @GetMapping(value = "/node_status")
     public String getNodeStatusList()
     {
         return kubernetesService.getNodeStatusList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/deployments")
+    @GetMapping(value = "/deployments")
     public String getDeploymentList()
     {
         return kubernetesService.getDeploymentList();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/services")
+    @GetMapping(value = "/services")
     public String getServiceList()
     {
         return kubernetesService.getServiceList();
     }
 
     //重要，JSON不能作为PathVariable，只能作为body中的内容
-    @RequestMapping(method = RequestMethod.POST, value = "/deployments")
-    public void addDeployment(@RequestBody String deployment)
+    @PostMapping(value = "/deployments")
+    public Result addDeployment(@RequestBody String deployment) throws InternalServerException
     {
-        kubernetesService.addDeployment(deployment);
+        return Result.get(kubernetesService.addDeployment(deployment));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/deployments/{name}")
+    @GetMapping(value = "/deployments/{name}")
     public String getDeployment(@PathVariable("name")String name)
     {
         return kubernetesService.getDeployment(name);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deployments/{name}")
+    @DeleteMapping(value = "/deployments/{name}")
     public void deleteDeployment(@PathVariable("name")String name)
     {
         kubernetesService.deleteDeployment(name);

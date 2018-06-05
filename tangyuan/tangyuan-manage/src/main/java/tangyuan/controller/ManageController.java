@@ -1,5 +1,7 @@
 package tangyuan.controller;
 
+import com.tangyuan.exception.NotFoundException;
+import com.tangyuan.exception.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +21,23 @@ public class ManageController
 
     @ApiOperation(value="获取实例列表", notes="获取实例列表")
     @GetMapping(value = "/instances")
-    public String getInstanceList()
+    public Object getInstanceList()
     {
-        return manageService.getInstanceList();
+        return Result.get(manageService.getInstanceList());
     }
 
     @ApiOperation(value="添加实例", notes="根据instance创建实例")
     @PostMapping(value = "/instances")
-    public Instance addInstance(@RequestBody Instance instance)
+    public Object addInstance(@RequestBody Instance instance)
     {
-        return manageService.addInstance(instance);
+        return Result.get(manageService.addInstance(instance));
     }
 
     @ApiOperation(value="获取实例信息", notes="根据id获取实例信息")
     @GetMapping(value = "/instances/{id}")
-    public String getInstanceOne(@PathVariable("id") String id)
+    public Object getInstance(@PathVariable("id") String id) throws NotFoundException
     {
-        return manageService.getInstanceOne(id);
+        return Result.get(manageService.getInstance(id));
     }
 
     @ApiOperation(value="删除实例", notes="根据id删除实例")
@@ -47,15 +49,22 @@ public class ManageController
 
     @ApiOperation(value="更新实例信息", notes="根据id和instance更新实例信息")
     @PutMapping(value = "/instances/{id}")
-    public Instance updateInstance(@PathVariable String id, @RequestBody Instance instance)
+    public Object updateInstance(@PathVariable String id, @RequestBody Instance instance) throws NotFoundException
     {
-        return manageService.updateInstance(id, instance);
+        return Result.get(manageService.updateInstance(id, instance));
+    }
+
+    @ApiOperation(value="部分更新实例信息", notes="根据id和instance部分更新实例信息")
+    @PatchMapping(value = "/instances/{id}")
+    public Object partialUpdateInstance(@PathVariable String id, @RequestBody Instance instance) throws NotFoundException
+    {
+        return Result.get(manageService.partialUpdateInstance(id, instance));
     }
 
     @ApiOperation(value="测试用接口", notes="测试用接口")
     @GetMapping(value = "/test")
     public String test()
     {
-        return "test ok!";
+        return "test get!";
     }
 }

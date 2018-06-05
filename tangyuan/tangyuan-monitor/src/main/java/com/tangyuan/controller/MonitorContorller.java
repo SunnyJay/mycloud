@@ -2,10 +2,7 @@ package com.tangyuan.controller;
 
 import com.tangyuan.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 作者：sunna
@@ -18,13 +15,13 @@ public class MonitorContorller
     @Autowired
     MonitorService monitorService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get_pod_info/{pod_name}")
-    String getPodInfo(@PathVariable("pod_name")String podName)
+    @GetMapping(value = "/pods/{name}")
+    public String getPod(@PathVariable("name")String name)
     {
-        return monitorService.getPodInfo(podName);
+        return monitorService.getPod(name);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    @GetMapping(value = "/test")
     public String test()
     {
         return "test ok!";

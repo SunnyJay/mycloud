@@ -14,8 +14,8 @@ public class MonitorService
     @Autowired
     KubernetesService kubernetesService;
 
-    public String getPodInfo(String podName)
+    public String getPod(String podName)
     {
-        return kubernetesService.getPodInfo(podName);
+        return kubernetesService.getPod(podName);
     }
 }
