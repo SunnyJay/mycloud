@@ -33,7 +33,7 @@ public class Result
 
     public static Result get(Object data)
     {
-        return new Result(data, null, true, ErrorCode.OK.getCode());
+        return new Result(data, null, true, ErrorCode.SUCCESS.getCode());
     }
 
     private Result(Object data, String message, boolean status, int code)
@@ -88,7 +88,7 @@ public class Result
     {
         NOT_FOUND_ERROR(400),
 
-        OK(200),
+        SUCCESS(200),
 
         INTERNAL_SERVER_ERROR(500);
 
