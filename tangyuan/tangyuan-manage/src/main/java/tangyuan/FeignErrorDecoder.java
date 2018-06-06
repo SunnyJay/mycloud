@@ -1,6 +1,7 @@
 package tangyuan;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.exception.NotFoundException;
@@ -18,8 +19,7 @@ import java.io.IOException;
  */
 public class FeignErrorDecoder implements ErrorDecoder
 {
-    private ObjectMapper objectMapper = new ObjectMapper();
-
+    //ErrorDecoder只有在响应为非200时自动调用，因此注意client使用ControllerAdvice自定义响应时，不要忘记改变ResponseStatus
     @Override
     public Exception decode(String s, Response response)
     {
@@ -29,7 +29,8 @@ public class FeignErrorDecoder implements ErrorDecoder
             String message = null;
             try
             {
-                Result result = this.objectMapper.readValue(Util.toString(response.body().asReader()), Result.class);
+                //使用JSON进行反序列化，注意Result一定要有默认构造函数
+                Result result = JSON.toJavaObject(JSON.parseObject(Util.toString(response.body().asReader())), Result.class);
                 errorCode = result.getCode();
                 message = result.getMessage();
 
@@ -40,11 +41,11 @@ public class FeignErrorDecoder implements ErrorDecoder
 
             if (errorCode == Result.ErrorCode.INTERNAL_SERVER_ERROR.getCode())
             {
-                return JSON.parseObject(message, InternalServerException.class);
+                return new InternalServerException(message);
             }
             else if (errorCode == Result.ErrorCode.NOT_FOUND_ERROR.getCode())
             {
-                return JSON.parseObject(message, NotFoundException.class);
+                return new NotFoundException(message);
             }
 
         }

@@ -32,18 +32,20 @@ public class ManageService
         return instanceRepository.findAll();
     }
 
-    public Instance addInstance(Instance instance) throws InternalServerException {
+    public Instance addInstance(Instance instance) {
 
         String deploymentInfo;
-        try
+        deploymentInfo = kubernetesService.addDeployment(JSON.toJSONString(instance));
+
+        //这里捕获与否根据需求，不显示捕获的话，addDeployment接口会直接抛出InternalServerException，此时注意接口一定不要声明
+        /*try
         {
-            kubernetesService.addDeployment(JSON.toJSONString(instance));
-            deploymentInfo = kubernetesService.getDeployment(instance.getId());
+           // deploymentInfo = kubernetesService.getDeployment(instance.getId());
         }
         catch (Exception e)
         {
             throw new InternalServerException(e.getMessage());
-        }
+        }*/
 
         JSONObject jsonObject = JSONObject.parseObject(deploymentInfo);
         String ip = jsonObject.getString("ip");

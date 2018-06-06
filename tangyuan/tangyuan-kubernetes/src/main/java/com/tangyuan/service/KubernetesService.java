@@ -167,6 +167,8 @@ public class KubernetesService
 
     public String addDeployment(String deploymentInfo) throws InternalServerException
     {
+        try
+        {
         JSONObject jsonObject = JSON.parseObject(deploymentInfo);
 
         int replicas = 1;
@@ -202,14 +204,13 @@ public class KubernetesService
                 .endSpec()
                 .build();
 
-        try
-        {
+
             Deployment ret = client.extensions().deployments().inNamespace("default").create(deployment);
             return JSONObject.toJSONString(ret);
         }
-        catch (KubernetesClientException e)
+        catch (Exception e)
         {
-            throw new InternalServerException("Deployment " + deploymentName +" 创建失败");
+            throw new InternalServerException("Deployment 创建失败");
         }
     }
 

@@ -1,5 +1,6 @@
 package tangyuan.client;
 
+import com.tangyuan.exception.Result;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public interface KubernetesService
     String getPod(@PathVariable("name") String name);
 
     @GetMapping(value = "/deployments")
-    void addDeployment(@RequestBody String deployment);
+    String addDeployment(@RequestBody String deployment);
 
     @GetMapping(value = "/deployments/{name}")
     String getDeployment(@PathVariable("name")String name);

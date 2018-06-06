@@ -27,9 +27,14 @@ public class ManageController
         return Result.get(manageService.getInstanceList());
     }
 
+    /**
+     * 不能抛出InternalServerException，否则会丢失异常信息
+     * @param instance
+     * @return
+     */
     @ApiOperation(value="添加实例", notes="根据instance创建实例")
     @PostMapping(value = "/instances")
-    public Object addInstance(@RequestBody Instance instance) throws InternalServerException {
+    public Object addInstance(@RequestBody Instance instance){
         return Result.get(manageService.addInstance(instance));
     }
 

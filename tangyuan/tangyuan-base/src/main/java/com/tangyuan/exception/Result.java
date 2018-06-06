@@ -44,6 +44,10 @@ public class Result
         this.code = code;
     }
 
+    //一定要添加 否则JSON无法反序列化
+    public Result() {
+    }
+
     public Boolean getStatus()
     {
         return status;
@@ -90,7 +94,7 @@ public class Result
 
         SUCCESS(200),
 
-        INTERNAL_SERVER_ERROR(500);
+        INTERNAL_SERVER_ERROR(600);
 
         private int code;
 
