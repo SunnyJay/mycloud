@@ -2,8 +2,12 @@ package com.tangyuan.controller;
 
 import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.service.KubernetesService;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +39,13 @@ public class KubernetesController
     }
 
     @ApiOperation(value="测试用接口", notes="测试用接口")
+    @PostMapping(value = "/services")
+    public Service addService(@RequestBody String service)
+    {
+        return kubernetesService.addService(service);
+    }
+
+    @ApiOperation(value="测试用接口", notes="测试用接口")
     @PostMapping(value = "/namespaces")
     public Namespace addNamespace(@RequestBody String nameSpace)
     {
@@ -50,7 +61,7 @@ public class KubernetesController
 
     @ApiOperation(value="测试用接口", notes="测试用接口")
     @GetMapping(value = "/namespaces/{name}")
-    public String getNameSpace(@PathVariable("name")String name)
+    public Namespace getNameSpace(@PathVariable("name")String name)
     {
         return kubernetesService.getNameSpace(name);
     }
@@ -71,7 +82,7 @@ public class KubernetesController
 
     @ApiOperation(value="测试用接口", notes="测试用接口")
     @GetMapping(value = "/deployments")
-    public String getDeploymentList()
+    public DeploymentList getDeploymentList()
     {
         return kubernetesService.getDeploymentList();
     }
@@ -86,7 +97,7 @@ public class KubernetesController
     //重要，JSON不能作为PathVariable，只能作为body中的内容
     @ApiOperation(value="添加实例", notes="添加实例")
     @PostMapping(value = "/deployments")
-    public Deployment addDeployment(@RequestBody String deployment) throws InternalServerException
+    public Deployment addDeployment(@RequestBody String deployment)
     {
         return kubernetesService.addDeployment(deployment);
     }
@@ -103,6 +114,20 @@ public class KubernetesController
     public void deleteDeployment(@PathVariable("name")String name)
     {
         kubernetesService.deleteDeployment(name);
+    }
+
+    @ApiOperation(value="测试用接口", notes="测试用接口")
+    @GetMapping(value = "/endpoints/{name}")
+    public Endpoints getEndpoints(@PathVariable("name")String name)
+    {
+        return kubernetesService.getEndpoints(name);
+    }
+
+    @ApiOperation(value="测试用接口", notes="测试用接口")
+    @GetMapping(value = "/endpoints")
+    public EndpointsList getEndpointsList()
+    {
+        return kubernetesService.getEndpointsList();
     }
 }
 

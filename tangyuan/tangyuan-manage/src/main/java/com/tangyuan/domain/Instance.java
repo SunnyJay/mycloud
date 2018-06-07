@@ -1,5 +1,6 @@
 package com.tangyuan.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -20,7 +21,10 @@ public class Instance
 
     private String instanceName;
 
-    private int type;
+    /**
+     * 一定要用引用类型，否则RequestBody中没有的字段会被转换为0
+     */
+    private Integer type;
 
     private String ip;
 
@@ -31,135 +35,111 @@ public class Instance
 
     private String userId;
 
-    private int status;
+    private Integer status;
 
-    private int baseOS;
+    private Integer baseOS;
 
-    private int cpuSize;
+    private Integer cpuSize;
 
-    private int memorySize;
+    private Integer memorySize;
 
-    private int diskSize;
+    private Integer diskSize;
 
     private Timestamp expireTime;
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getInstanceName()
-    {
+    public String getInstanceName() {
         return instanceName;
     }
 
-    public void setInstanceName(String instanceName)
-    {
+    public void setInstanceName(String instanceName) {
         this.instanceName = instanceName;
     }
 
-    public int getType()
-    {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type)
-    {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public String getIp()
-    {
+    public String getIp() {
         return ip;
     }
 
-    public void setIp(String ip)
-    {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
-    public Timestamp getCreateTime()
-    {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime)
-    {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public String getUserId()
-    {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId)
-    {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getStatus()
-    {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status)
-    {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public int getBaseOS()
-    {
+    public Integer getBaseOS() {
         return baseOS;
     }
 
-    public void setBaseOS(int baseOS)
-    {
+    public void setBaseOS(Integer baseOS) {
         this.baseOS = baseOS;
     }
 
-    public int getCpuSize()
-    {
+    public Integer getCpuSize() {
         return cpuSize;
     }
 
-    public void setCpuSize(int cpuSize)
-    {
+    public void setCpuSize(Integer cpuSize) {
         this.cpuSize = cpuSize;
     }
 
-    public int getMemorySize()
-    {
+    public Integer getMemorySize() {
         return memorySize;
     }
 
-    public void setMemorySize(int memorySize)
-    {
+    public void setMemorySize(Integer memorySize) {
         this.memorySize = memorySize;
     }
 
-    public int getDiskSize()
-    {
+    public Integer getDiskSize() {
         return diskSize;
     }
 
-    public void setDiskSize(int diskSize)
-    {
+    public void setDiskSize(Integer diskSize) {
         this.diskSize = diskSize;
     }
 
-    public Timestamp getExpireTime()
-    {
+    public Timestamp getExpireTime() {
         return expireTime;
     }
 
-    public void setExpireTime(Timestamp expireTime)
-    {
+    public void setExpireTime(Timestamp expireTime) {
         this.expireTime = expireTime;
     }
 

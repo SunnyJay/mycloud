@@ -2,13 +2,16 @@ package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tangyuan.exception.InternalServerException;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.tangyuan.domain.ResourceDefaultConstant.*;
 
 /**
  * 作者：sunna
@@ -62,14 +63,47 @@ public class KubernetesService
 
     public Namespace addNamespace(String nameSpace)
     {
-        //JSONObject obj = JSONObject.parseObject(nameSpace);
+        JSONObject jsonObject = JSONObject.parseObject(nameSpace);
         Namespace namespace = client.namespaces().createNew()
                 .withNewMetadata()
-                .withName(nameSpace)
+                .withName(jsonObject.getString("namespaceName"))
                 //.addToLabels("a", "label")
                 .endMetadata()
                 .done();
         return namespace;
+    }
+
+    public io.fabric8.kubernetes.api.model.Service addService(String serviceInfo)
+    {
+        JSONObject jsonObject = JSONObject.parseObject(serviceInfo);
+
+        String serviceName = jsonObject.getString("serviceName");
+        String namespace = jsonObject.getString("namespace");
+
+        JSONObject labels = jsonObject.getJSONObject("labels");
+        Map<String, String> labelsMap = JSONObject.parseObject(labels.toJSONString(),
+                new TypeReference<Map<String, String>>(){});
+
+        int port = JSON.parseObject(serviceInfo).getInteger("port");
+        System.out.println(port);
+
+        ServicePort servicePort = new ServicePortBuilder()
+                .withName("port").withPort(port).withProtocol("TCP").build();
+        IntOrString targetPort = new IntOrString();
+        targetPort.setIntVal(port);
+        servicePort.setTargetPort(targetPort);
+
+
+        return client.services().inNamespace(namespace).createNew()
+                .withNewMetadata()
+                .withName(serviceName)
+                .addToLabels(labels.getString("key"), labels.getString("value"))
+                .endMetadata()
+                .withNewSpec()
+                .withSelector(labelsMap)
+                .withPorts(servicePort)
+                .endSpec()
+                .done();
     }
 
     public String getNameSpaceList()
@@ -90,10 +124,9 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public String getNameSpace(String namespaceName)
+    public Namespace getNameSpace(String namespaceName)
     {
-        Namespace namespace = client.namespaces().withName(namespaceName).get();
-        return new Gson().toJson(namespace);
+        return client.namespaces().withName(namespaceName).get();
     }
 
     public String getNodeStatusList()
@@ -121,30 +154,9 @@ public class KubernetesService
         return new Gson().toJson(nodeStatusList);
     }
 
-    public String getDeploymentList()
+    public DeploymentList getDeploymentList()
     {
-        List<Map<String, Object>> dbList = Lists.newArrayList();
-        List<Deployment> list = client.extensions().deployments().inAnyNamespace().list().getItems();
-
-        for (Deployment dp : list)
-        {
-            String dpName = dp.getMetadata().getName();
-            String creationTimestamp = dp.getMetadata().getCreationTimestamp();
-            Map<String, String> labels = dp.getMetadata().getLabels();
-            int readyReplicas = dp.getStatus().getReadyReplicas();
-            int replicas = dp.getStatus().getReplicas();
-
-            Map<String, Object> dpInfoMap = Maps.newHashMap();
-            dpInfoMap.put("dpName", dpName);
-            dpInfoMap.put("creationTimestamp", creationTimestamp);
-            dpInfoMap.put("labels", labels);
-            dpInfoMap.put("readyReplicas", readyReplicas);
-            dpInfoMap.put("replicas", replicas);
-
-            dbList.add(dpInfoMap);
-        }
-
-        return new Gson().toJson(dbList);
+        return client.extensions().deployments().inAnyNamespace().list();
     }
 
     public String getServiceList()
@@ -166,50 +178,30 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-
-    private String getImageName(int baseOSNum) throws InternalServerException
+    public Deployment addDeployment(String deploymentInfo)
     {
-        String imageName;
-        switch (baseOSNum)
-        {
-            case 1:
-                imageName = CENTOS;
-                break;
-            case 2:
-                imageName = UBUNTU;
-                break;
-            default:
-                throw new InternalServerException("没有指定镜像");
-        }
-        return imageName;
-    }
-
-    public Deployment addDeployment(String deploymentInfo) throws InternalServerException
-    {
-        if(client.namespaces().withName(DEPLOYMENT_NAMESPACE).get() == null)
-        {
-            addNamespace(DEPLOYMENT_NAMESPACE);
-        }
-
         JSONObject jsonObject = JSON.parseObject(deploymentInfo);
-        String deploymentName = jsonObject.getString("userId") + "-" +jsonObject.getString("id");
-        String imageName = getImageName(jsonObject.getInteger("baseOS"));
+        String deploymentName = jsonObject.getString("deploymentName");
+        String imageName = jsonObject.getString("imageName");
+        String namespace = jsonObject.getString("namespace");
+        int containerPort = jsonObject.getInteger("containerPort");
+        JSONObject labels = JSON.parseObject(deploymentInfo).getJSONObject("labels");
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deploymentName)
                 .endMetadata()
                 .withNewSpec()
-                .withReplicas(DEPLOYMENT_REPLICAS_NUM)
+                .withReplicas(jsonObject.getInteger("replicas"))
                 .withNewTemplate()
                 .withNewMetadata()
-                .addToLabels(DEPLOYMENT_LABELS_KEY, deploymentName)
+                .addToLabels(labels.getString("key"), labels.getString("value"))
                 .endMetadata()
                 .withNewSpec()
                 .addNewContainer()
                 .withName(imageName)
                 .withImage(imageName)
                 .addNewPort()
-                .withContainerPort(DEPLOYMENT_CONTAINER_PORT)
+                .withContainerPort(containerPort)
                 .endPort()
                 .endContainer()
                 .endSpec()
@@ -217,19 +209,31 @@ public class KubernetesService
                 .endSpec()
                 .build();
 
-        return client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).create(deployment);
+        return client.extensions().deployments().inNamespace(namespace).create(deployment);
     }
 
 
     public Deployment getDeployment(String deploymentName)
     {
-        return client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).withName(deploymentName).get();
+        return client.extensions().deployments().inNamespace("default").withName(deploymentName).get();
     }
 
     public void deleteDeployment(String deploymentName)
     {
         Deployment deployment =
-                client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).withName(deploymentName).get();
+                client.extensions().deployments().inNamespace("default").withName(deploymentName).get();
         client.resource(deployment).delete();
+    }
+
+
+    public Endpoints getEndpoints(String resourceName) {
+
+        Endpoints endpoints = client.endpoints().inNamespace("default").withName(resourceName).get();
+        System.out.println(endpoints);
+        return endpoints;
+    }
+
+    public EndpointsList getEndpointsList() {
+       return client.endpoints().list();
     }
 }

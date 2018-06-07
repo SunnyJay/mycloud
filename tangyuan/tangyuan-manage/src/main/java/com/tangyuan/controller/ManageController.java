@@ -1,6 +1,7 @@
 package com.tangyuan.controller;
 
 import com.tangyuan.domain.Instance;
+import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.exception.NotFoundException;
 import com.tangyuan.service.ManageService;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +30,7 @@ public class ManageController
 
     @ApiOperation(value="添加实例", notes="根据instance添加实例")
     @PostMapping(value = "/instances")
-    public Instance addInstance(@RequestBody Instance instance){
+    public Instance addInstance(@RequestBody Instance instance) throws InternalServerException {
         return manageService.addInstance(instance);
     }
 

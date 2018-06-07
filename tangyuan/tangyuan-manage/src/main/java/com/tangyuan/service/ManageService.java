@@ -2,11 +2,13 @@ package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.deploy.resources.Deployment;
 import com.tangyuan.client.KubernetesService;
 import com.tangyuan.domain.Instance;
+import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.exception.NotFoundException;
 import com.tangyuan.repository.InstanceRepository;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static com.tangyuan.domain.ResourceDefaultConstant.*;
 import static com.tangyuan.util.Util.getNullPropertyNames;
 
 /**
@@ -35,17 +38,58 @@ public class ManageService
         return instanceRepository.findAll();
     }
 
-    public Instance addInstance(Instance instance) {
+    private String getImageName(int baseOSNum) throws InternalServerException
+    {
+        String imageName;
+        switch (baseOSNum)
+        {
+            case 1:
+                imageName = CENTOS;
+                break;
+            case 2:
+                imageName = UBUNTU;
+                break;
+            default:
+                throw new InternalServerException("没有指定镜像");
+        }
+        return imageName;
+    }
+
+    public Instance addInstance(Instance instance) throws InternalServerException {
 
         //去掉横线
-        String id = UUID.randomUUID().toString().replace("-", "");
+        String id = instance.getUserId() + "-" + UUID.randomUUID().toString().replace("-", "");
         instance.setId(id);
 
-        Deployment deploymentInfo = kubernetesService.addDeployment(JSON.toJSONString(instance));
-        JSONObject jsonObject = JSONObject.parseObject(deploymentInfo);
+        Namespace namespace = kubernetesService.getNameSpace(INSTANCE_NAMESPACE);
+        if(namespace == null)
+        {
+            JSONObject namespaceInfo = new JSONObject();
+            namespaceInfo.put("namespaceName", INSTANCE_NAMESPACE);
+            kubernetesService.addNameSpace(namespaceInfo.toJSONString());
+        }
 
-        String ip = jsonObject.getString("ip");
-        instance.setIp(ip);
+        JSONObject serviceInfo = new JSONObject();
+        serviceInfo.put("serviceName", "service-" + id);
+        serviceInfo.put("namespace", INSTANCE_NAMESPACE);
+        serviceInfo.put("port", INSTANCE_CONTAINER_PORT);
+        JSONObject labels = new JSONObject();
+        labels.put("key", INSTANCE_LABELS_KEY);
+        labels.put("value", id);
+        serviceInfo.put("labels", labels);
+
+        io.fabric8.kubernetes.api.model.Service service = kubernetesService.addService(serviceInfo.toJSONString());
+
+        JSONObject deploymentInfo = new JSONObject();
+        deploymentInfo.put("deploymentName", "deployment-" + id);
+        deploymentInfo.put("namespace", INSTANCE_NAMESPACE);
+        deploymentInfo.put("imageName", getImageName(instance.getBaseOS()));
+        deploymentInfo.put("containerPort", INSTANCE_CONTAINER_PORT );
+        deploymentInfo.put("replicas", INSTANCE_REPLICAS_NUM );
+        deploymentInfo.put("labels", labels);
+        kubernetesService.addDeployment(deploymentInfo.toJSONString());
+
+        instance.setIp(service.getSpec().getClusterIP());
         instance.setStatus(Instance.InstanceStatus.RUNING.getStatus());
 
         return instanceRepository.save(instance);
