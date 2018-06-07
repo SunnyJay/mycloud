@@ -1,15 +1,9 @@
-package tangyuan;
+package com.tangyuan.exception;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tangyuan.exception.InternalServerException;
-import com.tangyuan.exception.NotFoundException;
-import com.tangyuan.exception.Result;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 

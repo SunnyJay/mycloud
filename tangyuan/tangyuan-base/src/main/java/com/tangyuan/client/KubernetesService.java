@@ -1,8 +1,8 @@
-package tangyuan.client;
+package com.tangyuan.client;
 
-import com.tangyuan.exception.Result;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 
 /**
  * 作者：sunna
@@ -18,8 +18,8 @@ public interface KubernetesService
     String getPod(@PathVariable("name") String name);
 
     @GetMapping(value = "/deployments")
-    String addDeployment(@RequestBody String deployment);
+    Deployment addDeployment(@RequestBody String deployment);
 
     @GetMapping(value = "/deployments/{name}")
-    String getDeployment(@PathVariable("name")String name);
+    Deployment getDeployment(@PathVariable("name")String name);
 }

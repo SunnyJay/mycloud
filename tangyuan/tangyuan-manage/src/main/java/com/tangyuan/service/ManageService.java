@@ -1,17 +1,20 @@
-package tangyuan.service;
+package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.tangyuan.exception.InternalServerException;
+import com.sun.deploy.resources.Deployment;
+import com.tangyuan.client.KubernetesService;
+import com.tangyuan.domain.Instance;
 import com.tangyuan.exception.NotFoundException;
+import com.tangyuan.repository.InstanceRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tangyuan.client.KubernetesService;
-import tangyuan.domain.Instance;
-import tangyuan.repository.InstanceRepository;
 
 import java.util.List;
+import java.util.UUID;
+
+import static com.tangyuan.util.Util.getNullPropertyNames;
 
 /**
  * 作者：sunna
@@ -34,23 +37,16 @@ public class ManageService
 
     public Instance addInstance(Instance instance) {
 
-        String deploymentInfo;
-        deploymentInfo = kubernetesService.addDeployment(JSON.toJSONString(instance));
+        //去掉横线
+        String id = UUID.randomUUID().toString().replace("-", "");
+        instance.setId(id);
 
-        //这里捕获与否根据需求，不显示捕获的话，addDeployment接口会直接抛出InternalServerException，此时注意接口一定不要声明
-        /*try
-        {
-           // deploymentInfo = kubernetesService.getDeployment(instance.getId());
-        }
-        catch (Exception e)
-        {
-            throw new InternalServerException(e.getMessage());
-        }*/
-
+        Deployment deploymentInfo = kubernetesService.addDeployment(JSON.toJSONString(instance));
         JSONObject jsonObject = JSONObject.parseObject(deploymentInfo);
+
         String ip = jsonObject.getString("ip");
         instance.setIp(ip);
-        instance.setStatus("running");
+        instance.setStatus(Instance.InstanceStatus.RUNING.getStatus());
 
         return instanceRepository.save(instance);
     }
@@ -77,19 +73,11 @@ public class ManageService
         {
             throw new NotFoundException("instance " + id + "not found!");
         }
-        return instanceRepository.save(instance);
-    }
 
-    public Instance partialUpdateInstance(String id, Instance instance) throws NotFoundException
-    {
-        Instance currentInstance = instanceRepository.findOne(id);
-        if (currentInstance == null)
-        {
-            throw new NotFoundException("instance " + id + "not found!");
-        }
+        //支持部分更新
+        String[] nullPropertyNames = getNullPropertyNames(instance);
+        BeanUtils.copyProperties(instance, currentInstance, nullPropertyNames);
 
-        instance.setId(id);
-        BeanUtils.copyProperties(instance, currentInstance);
-        return instanceRepository.save(instance);
+        return instanceRepository.save(currentInstance);
     }
 }

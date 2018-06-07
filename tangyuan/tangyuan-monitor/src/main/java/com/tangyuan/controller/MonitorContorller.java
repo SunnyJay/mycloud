@@ -24,6 +24,6 @@ public class MonitorContorller
     @GetMapping(value = "/test")
     public String test()
     {
-        return "test ok!";
+        return "tangyuan ok!";
     }
 }

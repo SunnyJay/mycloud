@@ -1,7 +1,7 @@
-package tangyuan.repository;
+package com.tangyuan.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import tangyuan.domain.Instance;
+import com.tangyuan.domain.Instance;
 
 /**
  * 作者：sunna

@@ -2,7 +2,6 @@ dependencies {
     //compile("org.springframework.boot:spring-boot-starter-security")
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile group: 'io.fabric8', name: 'kubernetes-client', version: '3.1.11'
     compile project(":tangyuan-base")
 
 }

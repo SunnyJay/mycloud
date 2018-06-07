@@ -1,4 +1,4 @@
-package tangyuan;
+package com.tangyuan;
 
 import com.google.common.collect.Sets;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +20,14 @@ public class Swagger2 {
                 .protocols(Sets.newHashSet("http"))
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("tangyuan.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.tangyuan.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("tangyuan-manage")
+                .title("汤圆REST接口定义")
                 //.contact(new Contact("SunnyJay", "www.baidu.com", "378619435@qq.com"))
                 .version("1.0")
                 //.description("定义实例的一系列操作")

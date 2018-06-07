@@ -11,12 +11,13 @@ import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.tangyuan.domain.ResourceDefaultConstant.*;
 
 /**
  * 作者：sunna
@@ -59,16 +60,16 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public String addNamespace(String nameSpace)
+    public Namespace addNamespace(String nameSpace)
     {
-        JSONObject obj = JSONObject.parseObject(nameSpace);
+        //JSONObject obj = JSONObject.parseObject(nameSpace);
         Namespace namespace = client.namespaces().createNew()
                 .withNewMetadata()
-                .withName(obj.getString("name"))
-                .addToLabels("a", "label")
+                .withName(nameSpace)
+                //.addToLabels("a", "label")
                 .endMetadata()
                 .done();
-        return JSONObject.toJSONString(namespace);
+        return namespace;
     }
 
     public String getNameSpaceList()
@@ -165,38 +166,50 @@ public class KubernetesService
         return new Gson().toJson(list);
     }
 
-    public String addDeployment(String deploymentInfo) throws InternalServerException
+
+    private String getImageName(int baseOSNum) throws InternalServerException
     {
-        try
+        String imageName;
+        switch (baseOSNum)
         {
+            case 1:
+                imageName = CENTOS;
+                break;
+            case 2:
+                imageName = UBUNTU;
+                break;
+            default:
+                throw new InternalServerException("没有指定镜像");
+        }
+        return imageName;
+    }
+
+    public Deployment addDeployment(String deploymentInfo) throws InternalServerException
+    {
+        if(client.namespaces().withName(DEPLOYMENT_NAMESPACE).get() == null)
+        {
+            addNamespace(DEPLOYMENT_NAMESPACE);
+        }
+
         JSONObject jsonObject = JSON.parseObject(deploymentInfo);
-
-        int replicas = 1;
-        int port = 80;
-        String deploymentName = jsonObject.getString("id");
-        String imageName = jsonObject.getString("baseOS");
-        String image = jsonObject.getString("baseOS");
-        JSONObject labels = new JSONObject();
-        labels.put("key", "app");
-        labels.put("value", "nginx");
-
-
+        String deploymentName = jsonObject.getString("userId") + "-" +jsonObject.getString("id");
+        String imageName = getImageName(jsonObject.getInteger("baseOS"));
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deploymentName)
                 .endMetadata()
                 .withNewSpec()
-                .withReplicas(replicas)
+                .withReplicas(DEPLOYMENT_REPLICAS_NUM)
                 .withNewTemplate()
                 .withNewMetadata()
-                .addToLabels(labels.get("key").toString(), labels.get("value").toString())
+                .addToLabels(DEPLOYMENT_LABELS_KEY, deploymentName)
                 .endMetadata()
                 .withNewSpec()
                 .addNewContainer()
                 .withName(imageName)
-                .withImage(image)
+                .withImage(imageName)
                 .addNewPort()
-                .withContainerPort(port)
+                .withContainerPort(DEPLOYMENT_CONTAINER_PORT)
                 .endPort()
                 .endContainer()
                 .endSpec()
@@ -204,28 +217,19 @@ public class KubernetesService
                 .endSpec()
                 .build();
 
-
-            Deployment ret = client.extensions().deployments().inNamespace("default").create(deployment);
-            return JSONObject.toJSONString(ret);
-        }
-        catch (Exception e)
-        {
-            throw new InternalServerException("Deployment 创建失败");
-        }
+        return client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).create(deployment);
     }
 
 
-    public String getDeployment(String deploymentName)
+    public Deployment getDeployment(String deploymentName)
     {
-        Deployment deployment =
-                client.extensions().deployments().inNamespace("default").withName(deploymentName).get();
-        return new Gson().toJson(deployment);
+        return client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).withName(deploymentName).get();
     }
 
     public void deleteDeployment(String deploymentName)
     {
         Deployment deployment =
-                client.extensions().deployments().inNamespace("default").withName(deploymentName).get();
+                client.extensions().deployments().inNamespace(DEPLOYMENT_NAMESPACE).withName(deploymentName).get();
         client.resource(deployment).delete();
     }
 }
