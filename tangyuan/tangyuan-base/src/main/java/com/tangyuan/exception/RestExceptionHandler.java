@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.lang.reflect.UndeclaredThrowableException;
+
 /**
  * 作者：sunna
  * 时间: 2018/6/5 10:37
@@ -41,7 +43,14 @@ public class RestExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Result handleOtherException(Exception e)
     {
+        //用于解决由FeignErrorDecoder转换来的异常为UndeclaredThrowableException的情况
+        if (e.getMessage() == null)
+        {
+            e = (Exception) ((UndeclaredThrowableException) e).getUndeclaredThrowable();
+        }
         logger.error(e.getMessage(), e);
+
+
         return Result.get(null, e.getMessage(), false, 500);
     }
 }

@@ -1,10 +1,11 @@
 package com.tangyuan.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 /**
@@ -17,8 +18,11 @@ public class Instance
 {
     @Id
     //@GeneratedValue(generator = "jpa-uuid")
+    @NotNull
     private String id;
 
+    @NotNull
+    @Size(min=5, max=20)
     private String instanceName;
 
     /**
@@ -33,19 +37,59 @@ public class Instance
      */
     private Timestamp createTime;
 
+    @NotNull
     private String userId;
 
+    /**
+     * 实例状态:启动、关闭
+     */
     private Integer status;
 
+    /**
+     * 基础镜像
+     */
+    @NotNull
     private Integer baseOS;
 
+    /**
+     * Cpu核数
+     */
+    @NotNull
     private Integer cpuSize;
 
+    /**
+     * 内存大小 单位Mb
+     */
+    @NotNull
     private Integer memorySize;
 
+    /**
+     * 硬盘大小 单位Mb
+     */
+    @NotNull
     private Integer diskSize;
 
+    /**
+     * 过期时间 单位毫秒
+     */
+    @NotNull
     private Timestamp expireTime;
+
+    /**
+     * ssh密码
+     */
+    @NotNull
+    private String sshPassword;
+
+    public String getSshPassword()
+    {
+        return sshPassword;
+    }
+
+    public void setSshPassword(String sshPassword)
+    {
+        this.sshPassword = sshPassword;
+    }
 
     public String getId() {
         return id;

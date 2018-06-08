@@ -2,12 +2,9 @@ package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.tangyuan.exception.InternalServerException;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
@@ -81,17 +78,23 @@ public class KubernetesService
         String namespace = jsonObject.getString("namespace");
 
         JSONObject labels = jsonObject.getJSONObject("labels");
-        Map<String, String> labelsMap = JSONObject.parseObject(labels.toJSONString(),
-                new TypeReference<Map<String, String>>(){});
+        Map<String, String> labelsMap = Maps.newHashMap();
+        labelsMap.put(labels.getString("key"), labels.getString("value"));
 
-        int port = JSON.parseObject(serviceInfo).getInteger("port");
-        System.out.println(port);
 
-        ServicePort servicePort = new ServicePortBuilder()
-                .withName("port").withPort(port).withProtocol("TCP").build();
+        int servicePortInt = jsonObject.getInteger("servicePort");
+        int containerPort = jsonObject.getIntValue("containerPort");
+
+        ServicePort servicePort = new ServicePortBuilder().withName("port")
+                .withNodePort(servicePortInt)
+                .withPort(containerPort)
+                .withProtocol("TCP")
+                .withNewTargetPort(containerPort)
+                .build();
+/*
         IntOrString targetPort = new IntOrString();
-        targetPort.setIntVal(port);
-        servicePort.setTargetPort(targetPort);
+        targetPort.setIntVal(containerPort);
+        servicePort.setTargetPort(targetPort);*/
 
 
         return client.services().inNamespace(namespace).createNew()
@@ -101,6 +104,7 @@ public class KubernetesService
                 .endMetadata()
                 .withNewSpec()
                 .withSelector(labelsMap)
+                .withType(jsonObject.getString("type"))
                 .withPorts(servicePort)
                 .endSpec()
                 .done();
@@ -184,8 +188,13 @@ public class KubernetesService
         String deploymentName = jsonObject.getString("deploymentName");
         String imageName = jsonObject.getString("imageName");
         String namespace = jsonObject.getString("namespace");
+        String password = jsonObject.getString("password");
         int containerPort = jsonObject.getInteger("containerPort");
         JSONObject labels = JSON.parseObject(deploymentInfo).getJSONObject("labels");
+
+        EnvVar envVar = new EnvVar();
+        envVar.setName("ROOT_PASS");
+        envVar.setValue(password);
         Deployment deployment = new DeploymentBuilder()
                 .withNewMetadata()
                 .withName(deploymentName)
@@ -198,8 +207,9 @@ public class KubernetesService
                 .endMetadata()
                 .withNewSpec()
                 .addNewContainer()
-                .withName(imageName)
+                .withName("image")
                 .withImage(imageName)
+                .withEnv(envVar)
                 .addNewPort()
                 .withContainerPort(containerPort)
                 .endPort()

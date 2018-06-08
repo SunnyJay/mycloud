@@ -1,6 +1,5 @@
 package com.tangyuan.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.tangyuan.client.KubernetesService;
 import com.tangyuan.domain.Instance;
@@ -8,7 +7,6 @@ import com.tangyuan.exception.InternalServerException;
 import com.tangyuan.exception.NotFoundException;
 import com.tangyuan.repository.InstanceRepository;
 import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +70,9 @@ public class ManageService
         JSONObject serviceInfo = new JSONObject();
         serviceInfo.put("serviceName", "service-" + id);
         serviceInfo.put("namespace", INSTANCE_NAMESPACE);
-        serviceInfo.put("port", INSTANCE_CONTAINER_PORT);
+        serviceInfo.put("containerPort", INSTANCE_CONTAINER_PORT);
+        serviceInfo.put("servicePort", INSTANCE_SERVICE_PORT);
+        serviceInfo.put("type", INSTANCE_SERVICE_TYPE);
         JSONObject labels = new JSONObject();
         labels.put("key", INSTANCE_LABELS_KEY);
         labels.put("value", id);
@@ -86,6 +86,7 @@ public class ManageService
         deploymentInfo.put("imageName", getImageName(instance.getBaseOS()));
         deploymentInfo.put("containerPort", INSTANCE_CONTAINER_PORT );
         deploymentInfo.put("replicas", INSTANCE_REPLICAS_NUM );
+        deploymentInfo.put("password", instance.getSshPassword());
         deploymentInfo.put("labels", labels);
         kubernetesService.addDeployment(deploymentInfo.toJSONString());
 

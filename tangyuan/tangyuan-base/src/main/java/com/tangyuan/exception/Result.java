@@ -94,7 +94,7 @@ public class Result
 
         SUCCESS(200),
 
-        INTERNAL_SERVER_ERROR(600);
+        INTERNAL_SERVER_ERROR(500);
 
         private int code;
 

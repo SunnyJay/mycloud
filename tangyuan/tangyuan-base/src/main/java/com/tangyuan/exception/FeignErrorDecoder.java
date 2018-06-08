@@ -41,7 +41,6 @@ public class FeignErrorDecoder implements ErrorDecoder
             {
                 return new NotFoundException(message);
             }
-
         }
 
         return new Exception("未知错误");

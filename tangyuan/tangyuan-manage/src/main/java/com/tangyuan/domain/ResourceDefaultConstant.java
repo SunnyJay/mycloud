@@ -7,12 +7,14 @@ package com.tangyuan.domain;
 public class ResourceDefaultConstant
 {
     public static final int INSTANCE_REPLICAS_NUM = 1;
-    public static final int INSTANCE_CONTAINER_PORT = 80;
+    public static final int INSTANCE_CONTAINER_PORT = 22;
+    public static final int INSTANCE_SERVICE_PORT = 30033;
+    public static final String INSTANCE_SERVICE_TYPE = "NodePort";
     public static final String INSTANCE_LABELS_KEY = "app";
     public static final String INSTANCE_NAMESPACE = "tangyuan";
 
 
-    public static final String CENTOS = "centos";
-    public static final String UBUNTU = "ubuntu";
+    public static final String CENTOS = "tutum/centos";
+    public static final String UBUNTU = "rastasheep/ubuntu-sshd";
 
 }
