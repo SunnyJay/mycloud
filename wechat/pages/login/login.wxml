@@ -11,7 +11,7 @@
     <input type="text" placeholder="请输入密码" password="true" class="login-edit"  name='pass'/>
   </view>
 
-  <button type='primary'form-type='submit' class='login_button'>开始</button>
+  <button type='primary' form-type='submit' class='login_button'>开始</button>
 
 
 </form>

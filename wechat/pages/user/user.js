@@ -7,17 +7,51 @@ Page({
   data: {
     toView: 'red',
     scrollTop: 100,
-    productList: [
-      { "title": "创建云主机", "image": "../../images/server.png", "id": "server" },
-      { "title": "创建Redis", "image": "../../images/redis.png", "id": "redis" },
-      { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql" }],
+    instanceList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var that = this;
+
+    wx.request({
+      url: 'http://localhost:8804/tangyuan/manage/instances/',
+      method: 'GET',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        // utils.formatTime()
+
+        var utils = require('../../utils/util.js');
+
+        var instanceList = res.data;  
+        
+        for (var i = 0; i < instanceList.length; i++) {
+          var date = new Date(instanceList[i].expireTime);
+          instanceList[i].expireTime = utils.formatTime(date);
+          console.log(instanceList[i].expireTime)
+        };
+
+        //一定要在渲染前进行修改
+         that.setData({ instanceList: res.data });  
+
+
+      
+       // console.log(res.data)
+      },
+      fail: function (err) {
+        console.log(err.data)
+      },//请求失败
+      complete: function () {
+       
+      }
+    });
+   
+
+
   },
 
   /**

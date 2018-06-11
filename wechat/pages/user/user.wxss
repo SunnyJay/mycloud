@@ -1,1 +1,10 @@
 /* pages/user/user.wxss */
+
+.instance{
+  width: 100%;
+    background-color: gainsboro;
+  /* display: flex;
+  flex-direction: row; */
+  height: 300rpx;
+  margin: 10rpx;
+}

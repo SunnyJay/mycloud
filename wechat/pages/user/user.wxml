@@ -1,11 +1,22 @@
 <text>我的云产品</text>
-<scroll-view class='block_2' scroll-y  bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" 
-scroll-top="{{scrollTop}}" >
-<block wx:for="{{productList}}">
- <navigator url="../{{item.id}}/{{item.id}}">
-<view id="green" class='block'>
-    <text>AAA</text>
-    </view>
-    </navigator>
-</block>
-  </scroll-view>
+<scroll-view class='block_2' scroll-y bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+
+  <block wx:for="{{instanceList}}">
+    <!-- <navigator url="../{{item.id}}/{{item.id}}"> -->
+    <view class='instance'>
+      <view id="green" class='block'>
+        <text>{{item.instanceName}}</text>
+      </view>
+       <view id="green" class='block'>
+       <text>{{item.ip}}</text>
+      </view>
+       <view id="green" class='block'>
+       <text>{{item.status}}</text>
+      </view>
+          <view id="green" class='block'>
+       <text>到期时间：{{item.expireTime}}</text>
+      </view>
+      </view>
+    <!-- </navigator> -->
+  </block>
+</scroll-view>

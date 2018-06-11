@@ -2,28 +2,28 @@
   <view class="section">
     <text class="section__title">CPU(核)</text>
     <view class="body-view">
-      <slider bindchange="slider4change" min="1" max="4" show-value step="1" />
+      <slider bindchange="changeCpuSize" min="1" max="4" show-value step="1" />
     </view>
   </view>
 
   <view class="section">
     <text class="section__title">内存(G)</text>
     <view class="body-view">
-      <slider bindchange="slider4change" min="1" max="4" show-value step="1" />
+      <slider bindchange="changeMemorySize" min="1" max="4" show-value step="1" />
     </view>
   </view>
 
   <view class="section">
     <text class="section__title">硬盘(G)</text>
     <view class="body-view">
-      <slider bindchange="slider4change" min="10" max="40" show-value step="10" />
+      <slider bindchange="changeDiskSize" min="10" max="40" show-value step="10" />
     </view>
   </view>
 
   <view class="section">
     <text class="section__title">带宽</text>
     <view class="body-view">
-      <slider bindchange="slider4change" min="1" max="10" show-value step="1" />
+      <slider bindchange="changeBandwidth" min="1" max="10" show-value step="1" />
     </view>
   </view>
 
@@ -35,11 +35,11 @@
       </view>
     </picker>
   </view>
-
+  <form bindsubmit='formSubmit' >
   <view class="section">
     <view class='pass-view'>
       <label>登录密码:</label>
-      <input password="true" class='pass-edit'></input>
+      <input password="true" class='pass-edit' name='pass'></input>
     </view>
     <view class='pass-view'>
       <label>确认密码:</label>
@@ -48,7 +48,7 @@
   </view>
 
   <view>
-  <button type='primary' class='create-button'>创建云主机</button>
+  <button type='primary' form-type='submit' class='create-button'>创建云主机</button>
   </view>
-
+</form>
 </view>

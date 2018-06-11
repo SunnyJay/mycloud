@@ -6,7 +6,53 @@ Page({
    */
   data: {
     multiIndex: [0, 0, 0],
-    multiArray: [['CentOS', 'Ubuntu'], ['7.4', '7.3', '6.9', '16.04', '14.04']]
+    multiArray: [['CentOS', 'Ubuntu'], ['7.4', '7.3', '6.9', '16.04', '14.04']],
+    cpuSize: 1,
+    diskSize: 1,
+    memorySize: 1,
+    bandwidth: 1
+  },
+
+  changeCpuSize(e) {
+    this.setData({ cpuSize: e.detail.value })
+  },
+  changeDiskSize(e) {
+    this.setData({ diskSize: e.detail.value })
+  },
+  changeMemorySize(e) {
+    this.setData({ memorySize: e.detail.value })
+  },
+  changeBandwidth(e) {
+    this.setData({ bandwidth: e.detail.value })
+  },
+
+  formSubmit: function (e) {
+    wx.request({
+      url: 'http://localhost:8804/tangyuan/manage/instances',
+      method: 'POST',
+      data: {
+        sshPassword: e.detail.value.pass,
+        cpuSize: this.data.cpuSize,
+        diskSize: this.data.diskSize,
+        memorySize: this.data.memorySize,
+        bandwidth: this.data.bandwidth
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      }, 
+      success: function (res) {
+        console.log(res.data)
+      },
+      fail: function (err) {
+        console.log(err.data)
+      },//请求失败
+      complete: function () {
+        wx.navigateTo({
+          url: '../user/user'
+        })
+      }
+    })
+
   },
 
   /**
