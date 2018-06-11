@@ -15,7 +15,7 @@ import java.util.List;
  * 时间: 2018/5/11 11:22
  */
 @RestController
-@RequestMapping("com/tangyuan/manage")
+@RequestMapping("tangyuan/manage")
 public class ManageController
 {
     @Autowired
