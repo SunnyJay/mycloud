@@ -1,10 +1,101 @@
 /* pages/user/user.wxss */
 
-.instance{
-  width: 100%;
-    background-color: gainsboro;
-  /* display: flex;
-  flex-direction: row; */
-  height: 300rpx;
+.instance {
+
+  height: 250rpx;
+}
+
+.status_ip {
+  display: flex;
+  flex-direction: row;
+}
+
+.block {
   margin: 10rpx;
+}
+
+.title {
+  text-align: center;
+  /* position: fixed;
+ top:0;left:0;
+ width:100%; */
+}
+
+.tabnav {
+  /* min-width:20%;max-width:20%; */
+  text-align: center;
+  height: 80rpx;
+}
+
+.swiper-tab-list {
+  font-size: 40rpx;
+  display: inline-block;
+  width: 33.33%;
+  color: #777;
+  text-align: center;
+
+}
+
+.swiper-box {
+  display: block; 
+  height: 100%;
+  width: 100%;
+  overflow: hidden; 
+}
+
+ .on{ 
+  color: #da7c0c; 
+  border-bottom: 2rpx solid #da7c0c;}  
+
+
+  .swiper-tab{ 
+  width: 100%; 
+  border-bottom: 1rpx solid gray; 
+  text-align: center; 
+  line-height: 80rpx;} 
+
+  .instance_item{
+      background-color: white;
+    display: flex;
+    flex-direction: row;
+  border-bottom: 2rpx solid gray
+
+  }
+
+  .instance_left{
+  width: 80%;
+
+  }
+
+.instance_right{
+  width: 20%;
+  text-align: center
+}
+
+
+
+/*菜单背景遮罩*/
+.menu_cover{
+  position: fixed;
+  width:100%;
+  /* background-color: rgba(100,100,100,0.6);  */
+}
+
+/*模态窗口菜单*/
+.modal_menu{
+  width:100%;
+  background-color: #ccc;
+  position: absolute;
+}
+
+/*菜单列表*/
+
+.modal_menu_list{
+ width:100%;
+ height:99rpx;
+ line-height: 99rpx;
+ border-bottom: 1rpx gray solid;
+ text-align: center;
+ color:#1f1f1f;
+ font-size: 30rpx;
 }
