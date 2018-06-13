@@ -1,0 +1,44 @@
+<view>
+
+  <view class='info-section'>
+    <text class="header">基本信息</text>
+    <view class='info-item'>
+      <text>名称:</text>
+      <text>{{instanceDetail.instanceName}}</text>
+    </view>
+    <view class='info-item'>
+      <text>实例-ID:</text>
+      <text>{{instanceDetail.id}}</text>
+    </view>
+    <view class='info-item'>
+      <text>创建时间:</text>
+      <text>{{instanceDetail.createTime}}</text>
+    </view>
+
+  </view>
+
+  <view class='info-section'>
+    <text class="header">配置信息</text>
+    <view class='info-item'>
+      <text>CPU：</text>
+      <text>{{instanceDetail.cpuSize}} 核</text>
+    </view>
+        <view class='info-item'>
+      <text>内存：</text>
+      <text>{{instanceDetail.memorySize}} Mb</text>
+    </view>
+        <view class='info-item'>
+      <text>硬盘</text>
+      <text>{{instanceDetail.diskSize}} Mb</text>
+    </view>
+  </view>
+
+  <view class='info-section'>
+    <text class="header">付费信息</text>
+     <view class='info-item'>
+      <text>到期时间</text>
+      <text>{{instanceDetail.expireTime}}</text>
+    </view>
+  </view>
+
+</view>

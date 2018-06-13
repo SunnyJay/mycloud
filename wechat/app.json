@@ -6,6 +6,7 @@
     "pages/login/login",
     "pages/manage/manage",
     "pages/user/user",
+     "pages/user/detail",
     "pages/server/server"
   ],
   "window": {

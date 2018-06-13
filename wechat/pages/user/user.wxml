@@ -1,76 +1,76 @@
-<!--顶部滑块  -->
-
 <view>
 
-
-
-<view class="swiper-tab">
-  <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">云服务器</view>
-  <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">Redis</view>
-  <view class="swiper-tab-list {{currentTab==2 ? 'on' : ''}}" data-current="2" bindtap="swichNav">Mysql</view>
-</view>
-
-
-<!-- 滑块视图 -->
-<swiper current="{{currentTab}}" class="swiper-box" duration="300" style="height:{{winHeight - 31}}px" bindchange="bindChange">
-  <swiper-item >
-
-    <scroll-view scroll-y style='height:100%;background-color:#EDEDED' >
-
-      <block wx:for="{{instanceList}}">
-        <!-- <navigator url="../{{item.id}}/{{item.id}}"> -->
-        <view class='instance_item'  >
-          <view id='left' class='instance_left' bindtap='close_menu'>
-            <view class='instance'>
-              <view class='block'>
-                <text style='font-size:60rpx;'>{{item.instanceName}}</text>
-              </view>
-
-              <view class='status_ip'>
-                <view class='block' wx:if="{{item.status==1}}">
-                  <text style='color:green'>运行中</text>
-                </view>
-                <view class='block' wx:elif="{{item.status ==2}}">
-                  <text style='color:red'>已停止</text>
-                </view>
-                <view class='block' wx:else> 未知状态 </view>
-                <view class='block'>
-                  <text>公网 {{item.ip}}</text>
-                </view>
-              </view>
-              <view class='block'>
-                <text>到期时间：{{item.expireTime}}</text>
-              </view>
-            </view>
-          </view>
-          <view id='right' class='instance_right' bindtap='open_menu'>
-            ...
-          </view>
-        </view>
-        <!-- </navigator> -->
-      </block>
-    </scroll-view>
-  </swiper-item>
-
-  <swiper-item>
-    <view>Redis</view>
-  </swiper-item>
-  <swiper-item>
-    <view>MySql</view>
-  </swiper-item>
-</swiper>
-
-
-
-
- <view hidden="{{menu_hide}}" class="menu_cover">
-    <view class="modal_menu" animation="{{animation}}">
-      <view class="modal_menu_list">重启</view>
-      <view class="modal_menu_list">重置密码</view>
-      <view class="modal_menu_list">停止</view>
-    </view>
+  <!--滑块标签  -->
+  <view class="swiper-tab">
+    <!-- 滑块标签项 -->
+    <view class="swiper-tab-item {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">云服务器</view>
+    <view class="swiper-tab-item {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">Redis</view>
+    <view class="swiper-tab-item {{currentTab==2 ? 'on' : ''}}" data-current="2" bindtap="swichNav">Mysql</view>
   </view>
 
+  <!-- 滑块内容 -->
+  <swiper current="{{currentTab}}" class="swiper-content" duration="300" style="height:{{winHeight - 31}}px" bindchange="bindChange">
 
+    <!-- 滑块内容项 -->
+    <swiper-item>
+
+      <!-- 滚动视图 -->
+      <scroll-view scroll-top="{{scrollTop}}" scroll-y class='scroll-wrap' bindscrolltoupper="upper" bindscrolltolower="lower"
+      bindscroll="scroll"
+      >
+
+        <!-- 滚动项 -->
+        <block wx:for="{{instanceList}}">
+          <view  class='scroll-item' >
+
+            <!-- 左 -->
+            <view id="{{item.id}}"  class='scroll-item-left'  bindtap='showDetail'>
+
+              <!-- 实例 -->
+              <view class='instance'>
+                <!-- 名称 -->
+                <text class='instance-name'>{{item.instanceName}}</text>
+
+                <!-- 状态和IP -->
+                <view class='instance-status-ip'>
+                  <text class='instance-status' style='color:green' wx:if="{{item.status==1}}">运行中</text>
+                  <text class='instance-status' style='color:red' wx:elif="{{item.status ==2}}">已停止</text>
+                  <text class='instance-ip'>公网 {{item.ip}}</text>
+                </view>
+
+                <!-- 到期时间 -->
+                <text class='instance-date'>到期时间：{{item.expireTime}}</text>
+              </view>
+
+            </view>
+
+            <!-- 右 -->
+            <view id='right' class='scroll-item-right' bindtap="actionSheetTap">
+              ...
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </swiper-item>
+
+    <swiper-item>
+      <view>Redis</view>
+    </swiper-item>
+    <swiper-item>
+      <view>MySql</view>
+    </swiper-item>
+
+  </swiper>
+  <view hidden="{{menu_hide}}" class="menu_cover">
+    
+  </view>
+
+ <action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetChange" >
+
+  <block wx:for="{{actionSheetItems}}">
+    <action-sheet-item class="action-sheet-item" bindtap="bindItemTap" data-name="{{item}}">{{item}}</action-sheet-item>
+  </block>
+    <action-sheet-cancel class='action-sheet-item'>取消</action-sheet-cancel>
+</action-sheet> 
 
 </view>

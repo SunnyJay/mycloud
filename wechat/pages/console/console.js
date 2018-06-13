@@ -6,7 +6,7 @@ Page({
    */
   data: {
     toView: 'red',
-    scrollTop: 100,
+    scrollTop: 0,
     controlList: [
     { "title": "创建云主机", "image": "../../images/server.png","id":"server" }, 
     { "title": "创建Redis", "image": "../../images/redis.png", "id": "redis"  },
@@ -31,11 +31,11 @@ Page({
   scroll: function (e) {
     console.log(e)
   },
-  tapMove: function (e) {
-    this.setData({
-      scrollTop: this.data.scrollTop + 10
-    })
-  },
+  // tapMove: function (e) {
+  //   this.setData({
+  //     scrollTop: this.data.scrollTop + 10
+  //   })
+  // },
 
   /**
    * 生命周期函数--监听页面加载
