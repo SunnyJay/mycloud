@@ -10,7 +10,10 @@ Page({
     controlList: [
     { "title": "创建云主机", "image": "../../images/server.png","id":"server" }, 
     { "title": "创建Redis", "image": "../../images/redis.png", "id": "redis"  },
-    { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql"  }],
+    { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql"  },
+    { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql"  },
+    { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql" },
+    { "title": "创建Mysql", "image": "../../images/mysql.png", "id": "mysql" }],
     indicatorDots: true, //是否显示面板指示点	
     autoplay: false,
     interval: 5000,

@@ -1,3 +1,4 @@
+
 <view class='body'>
   <view class="section">
     <text class="section__title">CPU(核)</text>
@@ -35,20 +36,33 @@
       </view>
     </picker>
   </view>
+
+
+
   <form bindsubmit='formSubmit' >
-  <view class="section">
-    <view class='pass-view'>
+  <view class="pass">
+    <!-- <view class='pass-view'>
       <label>登录密码:</label>
       <input password="true" class='pass-edit' name='pass'></input>
     </view>
     <view class='pass-view'>
       <label>确认密码:</label>
       <input password="true" class='pass-edit'></input>
-    </view>
+    </view> -->
+    滴滴滴
   </view>
 
   <view>
   <button type='primary' form-type='submit' class='create-button'>创建云主机</button>
   </view>
 </form>
+
+
+
+  
+
 </view>
+
+  <view class="pass">
+  三生三世
+  </view>

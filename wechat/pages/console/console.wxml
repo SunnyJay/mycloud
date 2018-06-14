@@ -1,13 +1,5 @@
 <!--pages/console/console.wxml-->
 
-<swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-  <block wx:for="{{imgUrls}}">
-    <swiper-item>
-      <image src="{{item}}" class="slide-image" width="355" height="150" />
-    </swiper-item>
-  </block>
-</swiper>
-
 <!-- 滚动到顶部/左边，会触发 scrolltoupper 事件 -->
 <!-- 滚动到底部/右边，会触发 scrolltolower 事件 -->
 <!-- bindscroll="scroll"  滚动时触发 -->

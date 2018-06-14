@@ -26,6 +26,12 @@
   margin: 10rpx;
 }
 
+.swiper-tab{
+
+border-bottom: 2rpx solid gainsboro;
+
+}
+
 .swiper-tab-item {
   font-size: 40rpx;
   display: inline-block;

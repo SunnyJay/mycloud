@@ -9,6 +9,24 @@ Page({
     // id: 'aaa'
   },
 
+  // //下拉刷新
+  // onPullDownRefresh: function () {
+  //   wx.showNavigationBarLoading() //在标题栏中显示加载
+
+  //   //模拟加载
+  //   setTimeout(function () {
+
+
+
+      
+  //     // complete
+  //     wx.hideNavigationBarLoading() //完成停止加载
+      
+  //   }, 2000);
+
+    
+  // },
+
 
   /**
    * 生命周期函数--监听页面加载
@@ -21,7 +39,7 @@ Page({
     var that = this;
 
     wx.request({
-      url: 'http://78eb0942.ngrok.io/tangyuan/manage/instances/' + that.data.id,
+      url: 'http://3f6c5822.ngrok.io/tangyuan/manage/instances/' + that.data.id,
       method: 'GET',
       header: {
         'content-type': 'application/json' // 默认值

@@ -10,7 +10,8 @@
     "pages/server/server"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "小汤圆云",
     "navigationBarTextStyle": "black"

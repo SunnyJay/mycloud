@@ -75,23 +75,46 @@ Page({
       url: 'detail?id=' + e.currentTarget.id
     })
   },
-  upper: function(e) {
 
-    var that = this;
-    //that.setData({ instanceList: [] });
-    //scrollTop: 0  
-    //that.onLoad()
-    console.log("下拉刷新了....")
+  close_menu: function () {
+    //菜单动画
+    var animation = wx.createAnimation({
+      duration: 200,
+    })
+    animation.bottom("-400rpx").step();
+    this.setData({
+      animation: animation.export()
+    });
+
+    setTimeout(function () {
+      this.setData({
+        menu_hide: true
+      })
+    }.bind(this), 200)
   },
+
+  upper: function(e) {
+    var that = this;
+  
+    that.setData({ instanceList: []});
+    //that.onLoad()
+    console.log("下拉了....")
+  },
+
   lower: function(e) {
+    console.log("上拉了....")
     console.log(e)
   },
+
+
   scroll: function(event) {
-    console.log(event.detail.scrollTop)
+    console.log("滚动了....")
     this.setData({
       scrollTop: event.detail.scrollTop
     });
   },
+
+ 
 
   /**
    * 生命周期函数--监听页面加载
@@ -100,7 +123,7 @@ Page({
     var that = this;
 
     wx.request({
-      url: 'http://f95c14c9.ngrok.io/tangyuan/manage/instances',
+      url: 'http://3f6c5822.ngrok.io/tangyuan/manage/instances',
       method: 'GET',
       header: {
         'content-type': 'application/json' // 默认值
@@ -120,7 +143,8 @@ Page({
 
         //一定要在渲染前进行修改
         that.setData({
-          instanceList: instanceList
+          instanceList: instanceList,
+          scrollTop: 0
         });
 
 

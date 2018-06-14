@@ -15,10 +15,9 @@
     <swiper-item>
 
       <!-- 滚动视图 -->
-      <scroll-view scroll-top="{{scrollTop}}" scroll-y class='scroll-wrap' bindscrolltoupper="upper" bindscrolltolower="lower"
-      bindscroll="scroll"
-      >
-
+       <scroll-view scroll-top="{{scrollTop}}" scroll-y class='scroll-wrap' bindscrolltoupper="upper" bindscrolltolower="lower" 
+bindscroll="scroll"> 
+      <!-- <scroll-view scroll-top="{{scrollTop}}" scroll-y class='scroll-wrap'> -->
         <!-- 滚动项 -->
         <block wx:for="{{instanceList}}">
           <view  class='scroll-item' >
