@@ -12,9 +12,12 @@
 }
 
 .pass{
-  height: 50rpx;
+  width: 95%;
   border: 1px solid gainsboro;
-  background-color: #F0F0F0
+  background-color: #F0F0F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
 }
 
 .section{
@@ -25,12 +28,19 @@
 }
 
 .body{
+  width: 100%;
   display: flex;
-  flex-direction: column;
-   align-items: center; 
+  flex-direction: row;
+  height: 100%
 }
 
 .create-button{
-  margin: 20rpx;
-  width: 500rpx;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  width: 300rpx;
+}
+
+.picker{
+  margin-top: 20rpx;
+  text-align: center
 }

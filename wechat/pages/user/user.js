@@ -123,7 +123,7 @@ Page({
     var that = this;
 
     wx.request({
-      url: 'http://3f6c5822.ngrok.io/tangyuan/manage/instances',
+      url: 'http://127.0.0.1:8804/tangyuan/manage/instances',
       method: 'GET',
       header: {
         'content-type': 'application/json' // 默认值

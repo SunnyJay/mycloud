@@ -13,7 +13,6 @@
 
   <button type='primary' form-type='submit' class='login_button'>开始</button>
 
-
 </form>
 
 </view>
