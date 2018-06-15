@@ -46,10 +46,17 @@ public class Instance
     private Integer status;
 
     /**
-     * 基础镜像
+     * 基础 OS镜像
      */
     @NotNull
     private Integer baseOS;
+
+
+    /**
+     * 基础 OS镜像版本号
+     */
+    @NotNull
+    private String baseOSVersion;
 
     /**
      * Cpu核数
@@ -187,6 +194,16 @@ public class Instance
         this.expireTime = expireTime;
     }
 
+    public String getBaseOSVersion()
+    {
+        return baseOSVersion;
+    }
+
+    public void setBaseOSVersion(String baseOSVersion)
+    {
+        this.baseOSVersion = baseOSVersion;
+    }
+
     @Override
     public String toString()
     {
@@ -198,11 +215,13 @@ public class Instance
                 ", createTime=" + createTime +
                 ", userId='" + userId + '\'' +
                 ", status=" + status +
-                ", baseOS='" + baseOS + '\'' +
+                ", baseOS=" + baseOS +
+                ", baseOSVersion='" + baseOSVersion + '\'' +
                 ", cpuSize=" + cpuSize +
                 ", memorySize=" + memorySize +
                 ", diskSize=" + diskSize +
                 ", expireTime=" + expireTime +
+                ", sshPassword='" + sshPassword + '\'' +
                 '}';
     }
 

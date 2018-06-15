@@ -83,7 +83,7 @@ public class ManageService
         JSONObject deploymentInfo = new JSONObject();
         deploymentInfo.put("deploymentName", "deployment-" + id);
         deploymentInfo.put("namespace", INSTANCE_NAMESPACE);
-        deploymentInfo.put("imageName", getImageName(instance.getBaseOS()));
+        deploymentInfo.put("imageName", getImageName(instance.getBaseOS())+ ":" + instance.getBaseOSVersion());
         deploymentInfo.put("containerPort", INSTANCE_CONTAINER_PORT );
         deploymentInfo.put("replicas", INSTANCE_REPLICAS_NUM );
         deploymentInfo.put("password", instance.getSshPassword());
