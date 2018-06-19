@@ -6,6 +6,10 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.1.RELEASE'
     compile("org.springframework.boot:spring-boot-starter-data-jpa:1.5.13.RELEASE")
+
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(":tangyuan-base")
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'

@@ -1,6 +1,6 @@
 rootProject.name = 'tangyuan'
 
-include 'tangyuan-user'
+include 'tangyuan-account'
 include 'tangyuan-kubernetes'
 include 'tangyuan-monitor'
 include 'tangyuan-manage'

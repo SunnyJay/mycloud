@@ -52,7 +52,7 @@ public class OAuth2ServerConfig
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
 
-        /*@Bean
+/*        @Bean
         public RedisConnectionFactory jedisConnectionFactory()
         {
             JedisConnectionFactory connectionFactory = new JedisConnectionFactory();

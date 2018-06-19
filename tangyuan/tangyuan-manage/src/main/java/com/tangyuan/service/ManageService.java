@@ -41,10 +41,10 @@ public class ManageService
         String imageName;
         switch (baseOSNum)
         {
-            case 1:
+            case 0:
                 imageName = CENTOS;
                 break;
-            case 2:
+            case 1:
                 imageName = UBUNTU;
                 break;
             default:

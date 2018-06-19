@@ -8,7 +8,7 @@ public class ResourceDefaultConstant
 {
     public static final int INSTANCE_REPLICAS_NUM = 1;
     public static final int INSTANCE_CONTAINER_PORT = 22;
-    public static final int INSTANCE_SERVICE_PORT = 30033;
+    public static final int INSTANCE_SERVICE_PORT = 30088;
     public static final String INSTANCE_SERVICE_TYPE = "NodePort";
     public static final String INSTANCE_LABELS_KEY = "app";
     public static final String INSTANCE_NAMESPACE = "tangyuan";
