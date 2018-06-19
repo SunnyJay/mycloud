@@ -1,16 +1,15 @@
 {
   "pages": [
-    "pages/console/console",
-    "pages/index/index",
+    "pages/console/console/console",
+    "pages/account/index/index",
     "pages/logs/logs",
-    "pages/login/login",
-    "pages/manage/manage",
-    "pages/user/user",
-     "pages/user/detail",
-    "pages/server/server"
+    "pages/account/login/login",
+    "pages/account/user/user",
+    "pages/product/product/product",
+    "pages/product/detail/detail",
+    "pages/console/server/server"
   ],
   "window": {
-    
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "小汤圆云",
@@ -22,15 +21,15 @@
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/console/console",
+        "pagePath": "pages/console/console/console",
         "text": "控制台"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/product/product/product",
         "text": "我的云产品"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/account/user/user",
         "text": "账户"
       }
     ]

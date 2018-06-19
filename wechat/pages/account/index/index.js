@@ -18,6 +18,7 @@ Page({
     })
   },
   onLoad: function () {
+    //全局存在,则直接使用
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

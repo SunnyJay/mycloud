@@ -29,9 +29,9 @@
 
   <view class="section">
     <view class="section__title">镜像</view>
-<picker mode="multiSelector" bindchange="bindMultiPickerChange2" bindcolumnchange="bindMultiPickerColumnChange2" value="{{multiIndex2}}" range="{{objectMultiArray}}" range-key="{{'name'}}">
+<picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{objectMultiArray}}" range-key="{{'name'}}">
    <view class="picker">
-      当前选择：{{objectMultiArray[0][multiIndex2[0]].name}}，{{objectMultiArray[1][multiIndex2[1]].name}}
+      当前选择：{{objectMultiArray[0][multiIndex[0]].name}}，{{objectMultiArray[1][multiIndex[1]].name}}
    </view>
 </picker>
   </view>
@@ -45,7 +45,7 @@
       </view>
       <view class='pass-view'>
         <label>确认密码:</label>
-        <input password="true" class='pass-edit'></input>
+        <input password="true" class='pass-edit' name='passconfirm'></input>
       </view>
 
     

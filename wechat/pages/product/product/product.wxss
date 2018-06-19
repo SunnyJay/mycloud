@@ -1,0 +1,81 @@
+/* pages/user/user.wxss */
+
+/* .instance {
+  height: 250rpx;
+} */
+
+.instance-name {
+  font-size: 50rpx;
+  margin: 10rpx;
+}
+
+.instance-status-ip {
+  display: flex;
+  flex-direction: row;
+}
+
+.instance-ip {
+  margin: 10rpx;
+}
+
+.instance-status {
+  margin: 10rpx;
+}
+
+.instance-date {
+  margin: 10rpx;
+}
+
+.swiper-tab{
+
+border-bottom: 2rpx solid gainsboro;
+
+}
+
+.swiper-tab-item {
+  font-size: 40rpx;
+  display: inline-block;
+  width: 33.33%;
+  color: #777;
+  text-align: center;
+}
+
+.swiper-content {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.on {
+  color: #da7c0c;
+  border-bottom: 2rpx solid #da7c0c;
+}
+
+.scroll-item {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2rpx solid gray;
+  height: 220rpx;
+}
+
+.scroll-item-left {
+  width: 80%;
+}
+
+.scroll-item-right {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-wrap {
+  height: 100%;
+  background-color: #ededed;
+}
+
+.action-sheet-item{
+  font-size: 30rpx;
+}

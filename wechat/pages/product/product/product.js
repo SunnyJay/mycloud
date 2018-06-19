@@ -72,7 +72,7 @@ Page({
     var that = this;
     that.close_menu();
     wx.navigateTo({
-      url: 'detail?id=' + e.currentTarget.id
+      url: '../detail/detail?id=' + e.currentTarget.id
     })
   },
 
@@ -131,7 +131,7 @@ Page({
       success: function(res) {
         // utils.formatTime()
 
-        var utils = require('../../utils/util.js');
+        var utils = require('../../../utils/util.js');
 
         var instanceList = res.data;
 
