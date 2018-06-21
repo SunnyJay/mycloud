@@ -28,6 +28,15 @@ public class RestExceptionHandler
         return Result.get(null, e.getMessage(), false, e.getCode());
     }
 
+    @ExceptionHandler(value = UnauthorizedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result handleUnauthorizedException(UnauthorizedException e)
+    {
+        logger.error(e.getMessage(), e);
+        return Result.get(null, e.getMessage(), false, e.getCode());
+    }
+
     //一定要改变响应状态，而不只是body中的状态
     @ExceptionHandler(value = NotFoundException.class)
     @ResponseBody

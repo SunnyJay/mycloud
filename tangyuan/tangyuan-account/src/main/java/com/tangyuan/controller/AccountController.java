@@ -1,6 +1,7 @@
 package com.tangyuan.controller;
 
 import com.tangyuan.domain.User;
+import com.tangyuan.exception.UnauthorizedException;
 import com.tangyuan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class AccountController
 //        return userService.findUserByCode(code);
 //    }
 
+
     @RequestMapping("/update_user")
     public void updateUser(@RequestBody User user)
     {
@@ -47,8 +49,8 @@ public class AccountController
     }
 
     @PostMapping("/sessions")
-    public String login(@RequestBody String code)
+    public String addSession(@RequestBody String sessionInfo) throws UnauthorizedException
     {
-        return userService.login(code);
+        return userService.addSession(sessionInfo);
     }
 }

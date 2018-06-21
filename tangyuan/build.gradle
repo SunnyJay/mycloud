@@ -37,6 +37,8 @@ subprojects {
         compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.0'
         compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.0'
         compile group: 'io.fabric8', name: 'kubernetes-client', version: '3.1.11'
+        compile group: 'joda-time', name: 'joda-time', version: '2.10'
+
 
     }
     applicationDefaultJvmArgs = [

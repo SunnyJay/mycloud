@@ -5,96 +5,119 @@ Page({
    * 页面的初始数据
    */
   data: {
-    src: "resources/boy.png",
+    src: "images/boy.png",
     code: "abc",
-    
+    userInfo: '',
+    hasUserInfo: false,
+    isLogin: false
   },
-
+login()
+{
+  wx.navigateTo({
+    url: '../account/account'
+  })
+}
+,
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    this.setData({
-      phone: options.phone,
-      userInfo: options.userInfo
+  onLoad: function(options) {
 
-    }),
-      wx.login({
-        success: function (res) {
-          if (res.code) {
-            //发起网络请求
-            wx.request({
-              url: 'http://localhost:8899/get_user_by_code/' + res.code, //仅为示例，并非真实的接口地址
-              method: 'GET',
-              data: {
-                code: res.code,
-              },
-              header: {
-                'content-type': 'application/json' // 默认值
-              },
-              success: function (res) {
-              },
-              fail: function (err) {
-                console.log(err.data)
-              },//请求失败
-            })
-          } else {
-            console.log('登录失败！' + res.errMsg)
-          }
+    var that = this;
+    // 查看是否授权
+    wx.getSetting({
+      success: function(res) {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wx.getUserInfo({
+            success: function(res) {
+              console.log(res.userInfo)
+              that.setData({
+                userInfo: res.userInfo,
+                hasUserInfo: true
+              })
+            }
+          })
+
+        } else {
+          wx.redirectTo({
+            url: '../login/login'
+          })
+        }
+      }
+    });
+
+    var thirdSessionId = wx.getStorageSync('thirdSessionId')
+    console.log(thirdSessionId)
+
+    if (thirdSessionId) {
+      wx.checkSession({
+        // session_key 有效(未过期)
+        success: function () {
+          // 业务逻辑处理
+          console.log("未过期")
+          that.setData({
+            isLogin: true
+          })
+        },
+
+        // session_key 过期
+        fail: function () {
+          // session_key过期，重新登录
+          console.log("已过期")
+          that.doLogin();
         }
       })
-
-     
+    }
   },
 
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  
+  onReady: function() {
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    
+  onShow: function() {
+    this.onLoad()
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
-  
+  onHide: function() {
+
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
-  
+
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-  
+  onPullDownRefresh: function() {
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-  
+  onReachBottom: function() {
+
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-  
+  onShareAppMessage: function() {
+
   }
 })

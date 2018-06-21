@@ -2,19 +2,39 @@
 
 <view class='manage_body'>
 
-<view class="icon-group">
+<!-- <view class="icon-group">
   <icon  type="success" size="40"></icon>
-</view>
+</view> -->
 
   <view class="user_logo_block">
   
-    <image style="width: 100px; height: 100px; " mode="scaleToFill" src="{{src}}"></image>
-    <text> {{phone}}</text>
+  <view class='logo'>
+  <image style="width: 150rpx; height: 150rpx;border-radius:70%;" src="{{userInfo.avatarUrl}}" background-size="cover"></image> 
+    <text class='user_info'>{{userInfo.nickName}}</text>
+</view>
+
+  <view class='login_button_block'>
+  <!-- <view>未登录</view> -->
+
+
+  <button class='login_button' bindtap='login' wx:if="{{isLogin==false}}"  >登录</button>
+  </view>
   </view>
 
-  <view class="menu">
-    <image bindtap="bindViewTap" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
- 
-  </view>
+
+
+   <view class="menu">
+         <view class="menu_item">
+      <text >订单管理</text>
+   </view>
+   <view class="menu_item">
+      <text>联系我们</text>
+   </view>
+    <view class="menu_item">
+      <text>个人信息</text>
+   </view>
+
+  </view> 
+
 
 </view>

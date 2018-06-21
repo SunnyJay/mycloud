@@ -1,10 +1,10 @@
 {
   "pages": [
     "pages/console/console/console",
-    "pages/account/index/index",
+    "pages/account/user/user",
+     "pages/account/account/account",        
     "pages/logs/logs",
     "pages/account/login/login",
-    "pages/account/user/user",
     "pages/product/product/product",
     "pages/product/detail/detail",
     "pages/console/server/server"

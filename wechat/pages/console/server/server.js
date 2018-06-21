@@ -119,6 +119,43 @@ Page({
       console.log(e.detail.value.passconfirm)
       warn = '登录密码与确认密码不一致'
     } else {
+
+
+      var thirdSessionId = wx.getStorageSync('thirdSessionId')
+      console.log(thirdSessionId)
+
+      if (thirdSessionId) {
+        console.log("eeeeeeeee")
+
+        wx.checkSession({
+          // session_key 有效(未过期)
+          success: function () {
+            // 业务逻辑处理
+            console.log("未过期")
+            that.setData({
+              isLogin: true
+            })
+          },
+
+          // session_key 过期
+          fail: function () {
+            // session_key过期，重新登录
+            console.log("已过期")
+            that.doLogin();
+          }
+        })
+      }
+      else{
+        console.log("xxxxxxxxxxxxx")
+        wx.navigateTo({
+          url: '../../account/account/account'
+        })
+      }
+
+     
+
+
+
       flag = false;
       wx.request({
         url: 'http://127.0.0.1:8804/tangyuan/manage/instances',
@@ -143,7 +180,7 @@ Page({
         }, //请求失败
         complete: function() {
           wx.navigateTo({
-            url: '../user/user'
+            url: '../../product/product/product'
           })
         }
       })

@@ -90,6 +90,10 @@ public class Result
 
     public enum ErrorCode
     {
+        UNAUTHORIZED_ERROR(401),
+
+        FORBIDDEN_ERROR(403),
+
         NOT_FOUND_ERROR(400),
 
         SUCCESS(200),
