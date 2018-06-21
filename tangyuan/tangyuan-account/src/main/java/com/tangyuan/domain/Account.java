@@ -15,7 +15,7 @@ import java.util.Collection;
  * 时间: 2018/4/8 13:36
  */
 @Entity
-public class User implements UserDetails
+public class Account implements UserDetails
 {
     //不能是String
     @Id
@@ -164,7 +164,7 @@ public class User implements UserDetails
     @Override
     public String toString()
     {
-        return "User{" +
+        return "Account{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

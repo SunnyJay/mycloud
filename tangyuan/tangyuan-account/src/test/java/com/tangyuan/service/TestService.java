@@ -1,6 +1,6 @@
 package com.tangyuan.service;
 
-import com.tangyuan.domain.User;
+import com.tangyuan.domain.Account;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,10 +39,10 @@ public class TestService
     public void testGetUser()
     {
         String id = "jacksun";
-        User user = testRestTemplate.getForObject("/get_user/{id}", User.class, id);
-        System.out.println(user);
+        Account account = testRestTemplate.getForObject("/get_user/{id}", Account.class, id);
+        System.out.println(account);
 
-        Assert.assertThat(user.getUsername(), is("jacksun"));
+        Assert.assertThat(account.getUsername(), is("jacksun"));
     }
 
 }

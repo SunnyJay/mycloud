@@ -1,6 +1,6 @@
 package com.tangyuan.controller;
 
-import com.tangyuan.domain.User;
+import com.tangyuan.domain.Account;
 import com.tangyuan.exception.UnauthorizedException;
 import com.tangyuan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,34 +18,34 @@ public class AccountController
     UserService userService;
 
     @RequestMapping("/add_user")
-    public void addUser(@RequestBody User user)
+    public void addUser(@RequestBody Account account)
     {
-        userService.addUser(user);
+        userService.addUser(account);
     }
 
     @RequestMapping("/delete_user")
-    public void deleteUser(@RequestBody User user)
+    public void deleteUser(@RequestBody Account account)
     {
-        userService.deleteUser(user);
+        userService.deleteUser(account);
     }
 
     @RequestMapping("/get_user/{id}")
-    public User getUser(@PathVariable(name = "id")String username)
+    public Account getUser(@PathVariable(name = "id")String username)
     {
         return userService.findUser(username);
     }
 
 //    @RequestMapping("/get_user_by_code/{code}")
-//    public User getUserByCode(@PathVariable(name = "code")String code)
+//    public Account getUserByCode(@PathVariable(name = "code")String code)
 //    {
 //        return userService.findUserByCode(code);
 //    }
 
 
     @RequestMapping("/update_user")
-    public void updateUser(@RequestBody User user)
+    public void updateUser(@RequestBody Account account)
     {
-        userService.updateUser(user);
+        userService.updateUser(account);
     }
 
     @PostMapping("/sessions")

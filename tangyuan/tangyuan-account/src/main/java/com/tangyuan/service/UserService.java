@@ -1,7 +1,7 @@
 package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tangyuan.domain.User;
+import com.tangyuan.domain.Account;
 import com.tangyuan.exception.UnauthorizedException;
 import com.tangyuan.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
@@ -50,59 +50,59 @@ public class UserService
     }
 
 
-    public void addUser(User user)
+    public void addUser(Account account)
     {
-        Example<User> example = Example.of(user);
+        Example<Account> example = Example.of(account);
 
-        /*Optional<User> opt = userRepository.findOne(example);
+        /*Optional<Account> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
-            logger.info("the user has already exist!" , user.getUsername());
+            logger.info("the account has already exist!" , account.getUsername());
         }
         else
         {
             BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword().trim()));
-            userRepository.save(user);
+            account.setPassword(encoder.encode(account.getPassword().trim()));
+            userRepository.save(account);
         }*/
     }
 
-    public void deleteUser(User user)
+    public void deleteUser(Account account)
     {
-        Example<User> example = Example.of(user);
-        /*Optional<User> opt = userRepository.findOne(example);
+        Example<Account> example = Example.of(account);
+        /*Optional<Account> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
-            userRepository.delete(user);
+            userRepository.delete(account);
         }
         else
         {
-            logger.info("the user is not exist!" , user.getUsername());
+            logger.info("the account is not exist!" , account.getUsername());
         }*/
     }
 
-    public User findUser(String userName)
+    public Account findUser(String userName)
     {
-        User user = new User();
-        user.setUsername(userName);
-        /*Example<User> example = Example.of(user);
-        Optional<User> opt = userRepository.findOne(example);
+        Account account = new Account();
+        account.setUsername(userName);
+        /*Example<Account> example = Example.of(account);
+        Optional<Account> opt = userRepository.findOne(example);
         if (opt.isPresent())
         {
             return opt.get();
         }
         else
         {
-            logger.info("the user is not exist!" , user.getUsername());
+            logger.info("the account is not exist!" , account.getUsername());
             return null;
         }*/
         return null;
     }
 
 
-    public void updateUser(User user)
+    public void updateUser(Account account)
     {
-        userRepository.save(user);
+        userRepository.save(account);
     }
 
     public String addSession(String sessionInfo) throws UnauthorizedException

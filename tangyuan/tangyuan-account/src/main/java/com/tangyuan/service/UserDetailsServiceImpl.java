@@ -1,6 +1,6 @@
 package com.tangyuan.service;
 
-import com.tangyuan.domain.User;
+import com.tangyuan.domain.Account;
 import com.tangyuan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        User user = new User();
-        user.setUsername(username);
+        Account account = new Account();
+        account.setUsername(username);
 
         return null;
     }
