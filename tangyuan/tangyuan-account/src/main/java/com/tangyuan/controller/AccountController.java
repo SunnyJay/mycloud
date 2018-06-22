@@ -1,8 +1,10 @@
 package com.tangyuan.controller;
 
-import com.tangyuan.domain.Account;
+import com.tangyuan.domain.User;
+import com.tangyuan.domain.Session;
+import com.tangyuan.exception.NotFoundException;
 import com.tangyuan.exception.UnauthorizedException;
-import com.tangyuan.service.UserService;
+import com.tangyuan.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,42 +17,37 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController
 {
     @Autowired
-    UserService userService;
+    AccountService accountService;
 
-    @RequestMapping("/add_user")
-    public void addUser(@RequestBody Account account)
+    @RequestMapping("/users")
+    public void addUser(@RequestBody User user, @RequestBody String thirdSessionId)
     {
-        userService.addUser(account);
+        accountService.addUser(user);
     }
-
-    @RequestMapping("/delete_user")
-    public void deleteUser(@RequestBody Account account)
-    {
-        userService.deleteUser(account);
-    }
-
-    @RequestMapping("/get_user/{id}")
-    public Account getUser(@PathVariable(name = "id")String username)
-    {
-        return userService.findUser(username);
-    }
-
-//    @RequestMapping("/get_user_by_code/{code}")
-//    public Account getUserByCode(@PathVariable(name = "code")String code)
+//
+//    @RequestMapping("/delete_user")
+//    public void deleteUser(@RequestBody User account)
 //    {
-//        return userService.findUserByCode(code);
+//        accountService.deleteUser(account);
+//    }
+//
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable(name = "id")String id, @RequestBody String thirdSessionId) throws NotFoundException, UnauthorizedException
+    {
+        accountService.checkSessionIsValid(thirdSessionId);
+
+        return accountService.getUser(id);
+    }
+//
+//    @RequestMapping("/update_user")
+//    public void updateUser(@RequestBody User account)
+//    {
+//        accountService.updateUser(account);
 //    }
 
-
-    @RequestMapping("/update_user")
-    public void updateUser(@RequestBody Account account)
-    {
-        userService.updateUser(account);
-    }
-
     @PostMapping("/sessions")
-    public String addSession(@RequestBody String sessionInfo) throws UnauthorizedException
+    public Session addSession(@RequestBody Session sessionInfo) throws UnauthorizedException
     {
-        return userService.addSession(sessionInfo);
+        return accountService.addSession(sessionInfo);
     }
 }

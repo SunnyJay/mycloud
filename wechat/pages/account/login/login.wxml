@@ -1,23 +1,18 @@
-  <view class='body'>
-  <form bindsubmit='formSubmit' >
-
+<!--index.wxml-->
 <view>
-<button type='primary' wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">微信授权</button>
-<view wx:else>请升级微信版本</view>
-</view>
+  <form bindsubmit='formSubmit'>
 
-  <!-- <view class='login'>
-    <label>手机号码:</label>
-    <input placeholder="请输入手机号码" auto-focus class="login-edit" name='phone'/>
-  </view>
 
-  <view class='login'>
-    <label>密码:</label>
-    <input type="text" placeholder="请输入密码" password="true" class="login-edit"  name='pass'/>
-  </view>
+    <view class='login'>
+      <input placeholder="请输入手机号码" auto-focus class="login-edit" name='phone' />
+    </view>
+    <view class="line"></view>
+    <view class='login'>
+      <input type="text" placeholder="请输入短信验证码" class="login-edit" name='smsAuthCode' disabled="{{isDisabled}}" />
+      <button class='get_code' bindtap='getCode'>{{getText}}</button>
 
-  <button type='primary' form-type='submit' class='login_button'>开始</button> -->
+    </view>
+    <button type='primary' form-type='submit' class='login_button'>登录</button>
 
-</form>
-
+  </form>
 </view>

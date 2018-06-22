@@ -6,34 +6,32 @@
 
 
 .logo{
-  width: 60%;
+  width: 100%;
    display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around
+  justify-content: center;
+  height: 100%
   
 }
 .user_logo_block{
+  position: relative;
   height: 280rpx;
   width: 100%;
-  display: flex;
-  flex-direction: row;
+   /* display: flex; */
+  /* flex-direction: column;  */
   background-color: #4D4D4D;
-  justify-content:space-around;
+  /* justify-content:space-around; */
   padding: 30rpx;
     align-items:center;
 
 }
 
-.login_button_block{
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-}
 
 .login_button{
+  top: 120rpx;
+  right: 40rpx;
+position: absolute;
   width: 200rpx;
   height: 70rpx;
   line-height: 70rpx;
@@ -69,4 +67,15 @@ border-bottom: 2rpx solid gainsboro;
   margin-top: 30rpx;
   font-size: 40rpx;
   color: white;
+}
+
+
+.phone{
+  font-size: 30rpx;
+  background-color: gray;
+  width: 100%;
+  color: white;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center
 }

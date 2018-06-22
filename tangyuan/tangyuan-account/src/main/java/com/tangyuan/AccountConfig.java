@@ -7,8 +7,8 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.client.RestTemplate;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -56,4 +56,10 @@ public class AccountConfig
         redisTemplate.setConnectionFactory(factory);
         return redisTemplate;
     }
+
+
+//    @Bean
+//    public MethodValidationPostProcessor methodValidationPostProcessor(){
+//        return new MethodValidationPostProcessor();
+//    }
 }

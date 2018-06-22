@@ -1,0 +1,13 @@
+<view class='info-section'>
+
+  <view class='info-item'>
+    <text>账号ID:</text>
+    <text>{{accountDetail.id}}</text>
+  </view>
+
+    <view class='info-item'>
+    <text>注册时间:</text>
+    <text>{{accountDetail.createTime}}</text>
+  </view>
+
+</view>

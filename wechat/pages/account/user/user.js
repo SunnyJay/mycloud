@@ -9,21 +9,34 @@ Page({
     code: "abc",
     userInfo: '',
     hasUserInfo: false,
-    isLogin: false
+    isLogin: false,
+    phone: ''
   },
-login()
-{
-  wx.navigateTo({
-    url: '../account/account'
-  })
-}
-,
+
+  login() {
+    wx.navigateTo({
+      url: '../login/login'
+    })
+  },
+
+  showDetail: function (e) {
+    console.log(wx.getStorageSync('userId'))
+    var that = this;
+    wx.navigateTo({
+      url: 'detail/detail?id=' + wx.getStorageSync('userId')
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
 
+    const app = getApp();
     var that = this;
+
+  
+
     // 查看是否授权
     wx.getSetting({
       success: function(res) {
@@ -39,49 +52,39 @@ login()
             }
           })
 
+          var status = app.getSessionStatus();
+          
+          if (status == 1) {
+            //登录过则设置isLogin 
+            that.setData({
+              isLogin: true,
+              phone: wx.getStorageSync('phone')
+            })
+          } else{
+            //未登录过则什么都不做
+            console.log("未登录")
+          }
         } else {
+          //未授权，去授权界面授权
           wx.redirectTo({
-            url: '../login/login'
+            url: '../auth/auth'
           })
         }
       }
     });
 
-    var thirdSessionId = wx.getStorageSync('thirdSessionId')
-    console.log(thirdSessionId)
-
-    if (thirdSessionId) {
-      wx.checkSession({
-        // session_key 有效(未过期)
-        success: function () {
-          // 业务逻辑处理
-          console.log("未过期")
-          that.setData({
-            isLogin: true
-          })
-        },
-
-        // session_key 过期
-        fail: function () {
-          // session_key过期，重新登录
-          console.log("已过期")
-          that.doLogin();
-        }
-      })
-    }
   },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-  },
+  onReady: function() {},
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    console.log("onshow")
     this.onLoad()
   },
 
