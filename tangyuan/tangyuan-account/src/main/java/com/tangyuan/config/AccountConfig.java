@@ -1,4 +1,4 @@
-package com.tangyuan;
+package com.tangyuan.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
