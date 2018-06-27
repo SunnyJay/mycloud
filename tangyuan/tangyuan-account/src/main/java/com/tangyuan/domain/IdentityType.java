@@ -6,7 +6,10 @@ package com.tangyuan.domain;
  */
 public enum IdentityType
 {
-    PHONE(1), EMAIL(2), SMS_CODE(3);
+    PHONE_AND_PASS(1),
+    EMAIL_AND_PASS(2),
+    PHONE_AND_SMS_CODE(3),
+    ;
 
     private int type;
 

@@ -1,19 +1,22 @@
 package com.tangyuan.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tangyuan.domain.Session;
-import com.tangyuan.domain.WxProperties;
+import com.tangyuan.domain.*;
+import com.tangyuan.exception.InternalServerException;
+import com.tangyuan.exception.NotFoundException;
+import com.tangyuan.exception.ParamInvalidException;
 import com.tangyuan.exception.UnauthorizedException;
+import com.tangyuan.repository.UserCredentialRepository;
+import com.tangyuan.util.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.sql.Timestamp;
 
 
 /**
@@ -35,13 +38,16 @@ public class AuthService
     private RestTemplate restTemplate;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    @Autowired
     private WxProperties wxProperties;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private UserCredentialRepository userCredentialRepository;
 
 
     private String getSmsAuthCode()
@@ -50,76 +56,154 @@ public class AuthService
     }
 
 
-    private void checkSmsAuthCodeIsValid(String smsAuthCode, long smsCreateTime) throws UnauthorizedException
+    private String getUrl(String code)
     {
-        if (!StringUtils.equals(smsAuthCode, getSmsAuthCode()))
+        return String.format(wxProperties.getUrl(), wxProperties.getAppId(), wxProperties.getAppSecret(), code);
+    }
+
+    /**
+     * 目前，小程序支持三种登录方式：
+     *   1. 手机号+验证码
+     *   2. 手机号+密码
+     *   3. 邮箱+密码
+     *  无论哪种，都需要通过weixin生成token.
+     * @param loginInfo
+     * @return
+     * @throws UnauthorizedException
+     * @throws ParamInvalidException
+     * @throws InternalServerException
+     * @throws NotFoundException
+     */
+    public String login(LoginInfo loginInfo) throws UnauthorizedException, ParamInvalidException, InternalServerException, NotFoundException
+    {
+
+        if (StringUtils.isEmpty(loginInfo.getCode())
+                || StringUtils.isEmpty(loginInfo.getIdentifier())
+                ||  StringUtils.isEmpty(loginInfo.getCredential())
+                ||  loginInfo.getIdentityType() == 0 )
         {
-            //验证码错误
-            throw new UnauthorizedException("验证码错误");
+            throw new ParamInvalidException("参数错误");
         }
 
-        long diffMinutes = (System.currentTimeMillis() - smsCreateTime) / 1000;
+        this.auth(loginInfo);
 
-        if (diffMinutes > SMS_AUTH_CODE_TIMEOUT)
+        JSONObject jsonObject = JSONObject.parseObject(Utils.httpRequest(this.getUrl(loginInfo.getCode())));
+        if (jsonObject == null)
         {
-            //验证码过期
-            throw new UnauthorizedException("验证码过期");
+            throw new InternalServerException("登录失败");
+        }
+
+        String openId = jsonObject.getString("openid");
+        String sessionKey = jsonObject.getString("session_key");
+
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(sessionKey))
+        {
+            throw new InternalServerException("登录失败");
+        }
+
+        User user = userService.getUserByOpenId(openId);
+        if (user == null)
+        {
+            //第一次登录时直接注册（创建）用户
+            user = userService.addUser(openId, loginInfo);
+        }
+
+        //更新登录信息
+        user.setLastLoginIp(this.getLoginIp());
+        user.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
+        userService.updateUser(user.getId(), user);
+
+        //thirdSessionId
+        String token = tokenService.createToken(openId, sessionKey);
+
+        JSONObject ret = new JSONObject();
+        ret.put("token", token);
+        ret.put("expiresIn", SMS_AUTH_CODE_TIMEOUT);
+        ret.put("userId", user.getId());
+        ret.put("phone", user.getPhone());
+
+        return ret.toJSONString();
+    }
+
+    /**
+     * 认证
+     * @param loginInfo
+     * @throws UnauthorizedException
+     * @throws ParamInvalidException
+     */
+    private void auth(LoginInfo loginInfo) throws UnauthorizedException, ParamInvalidException
+    {
+        if (loginInfo.getIdentityType() == IdentityType.PHONE_AND_SMS_CODE.getType())
+        {
+            if (!StringUtils.equals(loginInfo.getCredential(), getSmsAuthCode()))
+            {
+                //验证码错误
+                throw new UnauthorizedException("验证码错误");
+            }
+
+            // TODO
+            long diffMinutes = (System.currentTimeMillis() - System.currentTimeMillis() ) / 1000;
+
+            if (diffMinutes > SMS_AUTH_CODE_TIMEOUT)
+            {
+                //验证码过期
+                throw new UnauthorizedException("验证码过期");
+            }
+        }
+        else if (loginInfo.getIdentityType() == IdentityType.EMAIL_AND_PASS.getType()
+                || loginInfo.getIdentityType() == IdentityType.PHONE_AND_PASS.getType())
+        {
+            UserCredential userCredential = userCredentialRepository.findByIdentifierAndIdentityType(loginInfo.getIdentifier(), loginInfo.getIdentityType());
+            if (userCredential == null)
+            {
+                throw new UnauthorizedException("用户不存在或密码错误");
+            }
+
+            String password = loginInfo.getCredential();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (!encoder.matches(password, userCredential.getCredential()))
+            {
+                throw new UnauthorizedException("用户不存在或密码错误");
+            }
+
+            //TODO
+            if (userCredential.getStatus() == 0)
+            {
+                throw new UnauthorizedException("用户被锁定");
+            }
+        }
+        else
+        {
+            throw new ParamInvalidException("登录类型错误");
         }
     }
 
-
-    private void cacheSession(String thirdSessionId, String openId, String sessionKey)
+    private String getLoginIp()
     {
-        //删除旧数据
-        if (redisTemplate.hasKey(openId))
+        return "";
+    }
+
+
+    public String logout(User user) throws InternalServerException
+    {
+        /*
+        三种情况：
+        1.请求中无token参数
+        2.缓存中token不存在
+        3.token对应的用户不存在
+         */
+        if (user == null)
         {
-            redisTemplate.delete(redisTemplate.opsForValue().get(openId));
-            redisTemplate.delete(openId);
+            throw new InternalServerException("内部错误");
         }
 
-        redisTemplate.opsForValue().set(thirdSessionId, sessionKey + openId, 1, TimeUnit.MINUTES);
-        redisTemplate.opsForValue().set(openId, thirdSessionId, 1, TimeUnit.MINUTES);
-    }
+        user.setLastLogoutTime(new Timestamp(System.currentTimeMillis()));
+        userService.updateUser(user);
+        tokenService.deleteToken(user.getWxOpenId());
 
-    private String getUrl()
-    {
-        return String.format(
-                wxProperties.getUrl(),
-                wxProperties.getAppId(),
-                wxProperties.getAppSecret());
-    }
+        JSONObject ret = new JSONObject();
+        ret.put("userId", user.getId());
 
-    public Session addSession(Session session) throws UnauthorizedException
-    {
-        //第一次登录同时注册
-        if (StringUtils.isNotEmpty(session.getPhone())
-                &&  StringUtils.isNotEmpty(session.getSmsAuthCode())
-                && session.getSmsCreateTime() != null)
-        {
-            userService.addUser(session);
-        }
-
-        JSONObject jsonObject = JSONObject.parseObject(restTemplate.getForEntity(this.getUrl(), String.class).getBody());
-
-        String thirdSessionId = UUID.randomUUID().toString();
-        this.cacheSession(thirdSessionId, jsonObject.getString("openid"), jsonObject.getString("session_key"));
-
-        session.setThirdSessionId(thirdSessionId);
-        session.setExpiresIn(jsonObject.getString("expires_in"));
-
-        return session;
-    }
-
-    public void checkSessionIsValid(String thirdSessionId) throws UnauthorizedException
-    {
-
-        if (!redisTemplate.hasKey(thirdSessionId))
-        {
-            throw new UnauthorizedException("未登录");
-        }
-    }
-
-    public Session deleteSession(String sessionId)
-    {
+        return ret.toJSONString();
     }
 }

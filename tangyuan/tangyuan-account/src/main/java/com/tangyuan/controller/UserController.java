@@ -1,9 +1,8 @@
 package com.tangyuan.controller;
 
 import com.tangyuan.domain.User;
+import com.tangyuan.domain.UserInfo;
 import com.tangyuan.exception.NotFoundException;
-import com.tangyuan.exception.UnauthorizedException;
-import com.tangyuan.service.AuthService;
 import com.tangyuan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,37 +11,25 @@ import org.springframework.web.bind.annotation.*;
  * 作者：sunna
  * 时间: 2018/6/25 16:57
  */
-@RequestMapping("tangyuan/account")
+@RequestMapping("tangyuan/api/account")
 @RestController
 public class UserController
 {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @RequestMapping("/users")
-    public void addUser(@RequestBody User user, @RequestBody String thirdSessionId)
-    {
-        userService.addUser(user);
-    }
-    //
-//    @RequestMapping("/delete_user")
-//    public void deleteUser(@RequestBody User account)
-//    {
-//        accountService.deleteUser(account);
-//    }
-//
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable(name = "id")String id, @RequestBody String thirdSessionId) throws NotFoundException, UnauthorizedException
+    public UserInfo getUser(@PathVariable(name = "id")String id) throws NotFoundException
     {
-        authService.checkSessionIsValid(thirdSessionId);
-
-        return authService.getUser(id);
+        return userService.getUser(id);
     }
-//
-//    @RequestMapping("/update_user")
-//    public void updateUser(@RequestBody User account)
-//    {
-//        accountService.updateUser(account);
-//    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable(name = "id")String id, @RequestBody User user) throws NotFoundException
+    {
+        return userService.updateUser(id, user);
+    }
+
+
 
 }

@@ -4,6 +4,10 @@
     <text>账号ID:</text>
     <text>{{accountDetail.id}}</text>
   </view>
+    <view class='info-item'>
+    <text>手机号码:</text>
+    <text>{{accountDetail.phone}}</text>
+  </view>
 
     <view class='info-item'>
     <text>注册时间:</text>

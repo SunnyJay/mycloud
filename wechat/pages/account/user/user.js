@@ -27,6 +27,48 @@ Page({
     })
   },
 
+  logout: function (e) {
+    var that = this;
+    wx.showModal({
+      title: '提示',
+      content: '确定退出吗？',
+      success: function (sm) {
+        if (sm.confirm) {
+
+          var token = wx.getStorageSync('token')
+
+          wx.request({
+            url: 'http://127.0.0.1:8801/tangyuan/api/account/logout/',
+            method: 'POST',
+            header: {
+              'content-type': 'application/json', // 默认值
+              'X-tangyuan-Token': token
+            },
+            success: function (res) {
+              console.log(res.data)
+              wx.removeStorageSync('token')
+              wx.removeStorageSync('userId')
+              console.log('已删除')
+
+
+              //刷新页面 重要
+              that.setData({
+                isLogin: false,
+              })
+              that.onLoad()
+            },
+          })
+
+
+        } else if (sm.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+   
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -56,9 +98,14 @@ Page({
           
           if (status == 1) {
             //登录过则设置isLogin 
+            var phone=wx.getStorageSync('phone')
+            phone = phone.split('')
+            phone.splice(3,4,'****')
+            phone = phone.join('')
+
             that.setData({
               isLogin: true,
-              phone: wx.getStorageSync('phone')
+              phone: phone
             })
           } else{
             //未登录过则什么都不做

@@ -18,14 +18,15 @@ Page({
       id: options.id
     });   
 
-
+    var token = wx.getStorageSync('token')
     var that = this;
     console.log(that.data.id)
     wx.request({
-      url: 'http://127.0.0.1:8801/tangyuan/account/accounts/' + that.data.id,
+      url: 'http://127.0.0.1:8801/tangyuan/api/account/users/' + that.data.id,
       method: 'GET',
       header: {
-        'content-type': 'application/json' // 默认值
+        'content-type': 'application/json', // 默认值
+        'X-tangyuan-Token': token
       },
       success: function(res) {
         that.setData({

@@ -22,8 +22,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    private static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
-    private static final String LOGIN_TOKEN_KEY = "X-tangyuan-Token";
+    public static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
+    public static final String LOGIN_TOKEN_KEY = "X-tangyuan-Token";
 
 
     @Override

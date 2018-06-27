@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * 时间: 2018/6/22 15:26
  */
 @Entity
-public class UserAuth
+public class UserCredential
 {
     @Id
     @NotNull
@@ -29,6 +29,11 @@ public class UserAuth
     private int identityType;
 
     private String credential;
+
+    /**
+     * 用户状态 0禁用 1正常
+     */
+    private int status;
 
     public String getId()
     {
@@ -88,5 +93,15 @@ public class UserAuth
     public void setCredential(String credential)
     {
         this.credential = credential;
+    }
+
+    public int getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(int status)
+    {
+        this.status = status;
     }
 }

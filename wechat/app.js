@@ -6,7 +6,7 @@ App({
      */
     getSessionStatus: function() {
       var status = 5;
-      var thirdSessionId = wx.getStorageSync('thirdSessionId')
+      var thirdSessionId = wx.getStorageSync('token')
       console.log(thirdSessionId)
 
       if (thirdSessionId) {

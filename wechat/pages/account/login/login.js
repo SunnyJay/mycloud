@@ -12,7 +12,8 @@ Page({
     getText: '获取验证码',
     getChange: true,
     smsCreateTime: '',
-    isDisabled: true
+    isDisabled: true,
+    
   },
   //事件处理函数
   bindViewTap: function() {
@@ -77,6 +78,7 @@ Page({
 
   //首次登录并且添加用户
   doLogin(e) {
+    var identityType=3
     var smsCreateTime = this.data.smsCreateTime
     console.log(smsCreateTime)
     console.log(e.detail.value.smsAuthCode)
@@ -87,13 +89,13 @@ Page({
         if (res.code) {
           console.log(res.code)
           wx.request({
-            url: 'http://127.0.0.1:8801/tangyuan/account/sessions/', //仅为示例，并非真实的接口地址
+            url: 'http://127.0.0.1:8801/tangyuan/api/account/login', //仅为示例，并非真实的接口地址
             method: 'POST',
             data: {
-              phone: e.detail.value.phone,
-              smsAuthCode: e.detail.value.smsAuthCode,
+              identifier: e.detail.value.phone,
+              credential: e.detail.value.smsAuthCode,
               code: res.code,
-              smsCreateTime: smsCreateTime,
+              identityType: identityType,
               nickName: smsCreateTime
             },
             header: {
@@ -115,8 +117,11 @@ Page({
               }
 
               if (res.statusCode == 200) {
-                wx.setStorageSync('thirdSessionId', res.data.thirdSessionId)
+                console.log('token' + res.data.token)
+                wx.setStorageSync('token', res.data.token) //token也就是thirdSessionId
                 wx.setStorageSync('phone', res.data.phone)
+                console.log('账号' + res.data.userId)
+                wx.setStorageSync('userId', res.data.userId)
                 wx.navigateBack({
                   delta: 1
                 })
