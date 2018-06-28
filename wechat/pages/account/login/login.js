@@ -78,7 +78,7 @@ Page({
 
   //首次登录并且添加用户
   doLogin(e) {
-    var identityType=3
+    var identityType=1
     var smsCreateTime = this.data.smsCreateTime
     console.log(smsCreateTime)
     console.log(e.detail.value.smsAuthCode)
@@ -89,7 +89,7 @@ Page({
         if (res.code) {
           console.log(res.code)
           wx.request({
-            url: 'http://127.0.0.1:8801/tangyuan/api/account/login', //仅为示例，并非真实的接口地址
+            url: 'http://127.0.0.1:8808/tangyuan/api/account/login', //仅为示例，并非真实的接口地址
             method: 'POST',
             data: {
               identifier: e.detail.value.phone,

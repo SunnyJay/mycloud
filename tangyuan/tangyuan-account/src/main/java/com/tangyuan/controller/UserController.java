@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * 作者：sunna
  * 时间: 2018/6/25 16:57
  */
-@RequestMapping("tangyuan/api/account")
+@RequestMapping("tangyuan/account")
 @RestController
 public class UserController
 {

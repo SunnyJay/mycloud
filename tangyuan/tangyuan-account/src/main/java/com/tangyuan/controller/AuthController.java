@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 作者：sunna
  * 时间: 2018/4/8 13:48
  */
-@RequestMapping("tangyuan/api/account")
+@RequestMapping("tangyuan/account")
 @RestController
 public class AuthController
 {
@@ -31,6 +31,7 @@ public class AuthController
     @PostMapping("/login")
     public String login(@RequestBody LoginInfo loginInfo) throws UnauthorizedException, ParamInvalidException, InternalServerException, NotFoundException
     {
+        System.out.println("zzzzzzzzz");
         return authService.login(loginInfo);
     }
 

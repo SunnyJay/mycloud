@@ -5,4 +5,5 @@ include 'tangyuan-kubernetes'
 include 'tangyuan-monitor'
 include 'tangyuan-manage'
 include 'tangyuan-base'
+include 'tangyuan-api'
 

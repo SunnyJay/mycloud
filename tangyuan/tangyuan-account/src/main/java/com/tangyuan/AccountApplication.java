@@ -28,14 +28,14 @@ public class AccountApplication extends WebMvcConfigurationSupport
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
-        argumentResolvers.add(resolver);
+        //argumentResolvers.add(resolver);
     }
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry)
     {
         super.addInterceptors(registry);
-        registry.addInterceptor(authorizationInterceptor);
+        //registry.addInterceptor(authorizationInterceptor);
     }
 
     public static void main(String[] args)

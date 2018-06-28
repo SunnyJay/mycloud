@@ -17,8 +17,7 @@
 
   </view>
 
-<view class='phone' wx:if="{{isLogin==true}}"> <navigator >当前手机号: {{phone}} ></navigator> </view>
-
+<view class='phone' wx:if="{{isLogin==true}}"> <navigator >已绑定手机号: {{phone}} ></navigator> </view>
 
    <view class="menu" wx:if="{{isLogin==true}}">
          <view class="menu_item">

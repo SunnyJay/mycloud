@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -62,11 +61,7 @@ public class AuthService
     }
 
     /**
-     * 目前，小程序支持三种登录方式：
-     *   1. 手机号+验证码
-     *   2. 手机号+密码
-     *   3. 邮箱+密码
-     *  无论哪种，都需要通过weixin生成token.
+     * 目前只支持使用手机验证码登录
      * @param loginInfo
      * @return
      * @throws UnauthorizedException
@@ -85,7 +80,7 @@ public class AuthService
             throw new ParamInvalidException("参数错误");
         }
 
-        this.auth(loginInfo);
+        this.checkSmsCodeIsValid(loginInfo);
 
         JSONObject jsonObject = JSONObject.parseObject(Utils.httpRequest(this.getUrl(loginInfo.getCode())));
         if (jsonObject == null)
@@ -102,10 +97,32 @@ public class AuthService
         }
 
         User user = userService.getUserByOpenId(openId);
+
+        //用户未注册
         if (user == null)
         {
-            //第一次登录时直接注册（创建）用户
+            //判断手机号是否被绑定
+            UserCredential credential = userCredentialRepository.findByIdentifierAndIdentityType(loginInfo.getIdentifier(),
+                    loginInfo.getIdentityType());
+
+            if (credential != null)
+            {
+                throw new UnauthorizedException("该手机号已被其他微信号绑定");
+            }
+
+            //第一次登录时直接注册（创建）用户  将手机号与微信号绑定
             user = userService.addUser(openId, loginInfo);
+        }
+        else
+        {
+            //用户已注册
+            //判断手机号是否被绑定
+            UserCredential credential = userCredentialRepository.findByIdentifierAndIdentityType(loginInfo.getIdentifier(),
+                    loginInfo.getIdentityType());
+            if (credential == null)
+            {
+                throw new UnauthorizedException("该手机号与本微信号尚未绑定");
+            }
         }
 
         //更新登录信息
@@ -131,7 +148,7 @@ public class AuthService
      * @throws UnauthorizedException
      * @throws ParamInvalidException
      */
-    private void auth(LoginInfo loginInfo) throws UnauthorizedException, ParamInvalidException
+    private void checkSmsCodeIsValid(LoginInfo loginInfo) throws UnauthorizedException, ParamInvalidException
     {
         if (loginInfo.getIdentityType() == IdentityType.PHONE_AND_SMS_CODE.getType())
         {
@@ -150,32 +167,11 @@ public class AuthService
                 throw new UnauthorizedException("验证码过期");
             }
         }
-        else if (loginInfo.getIdentityType() == IdentityType.EMAIL_AND_PASS.getType()
-                || loginInfo.getIdentityType() == IdentityType.PHONE_AND_PASS.getType())
-        {
-            UserCredential userCredential = userCredentialRepository.findByIdentifierAndIdentityType(loginInfo.getIdentifier(), loginInfo.getIdentityType());
-            if (userCredential == null)
-            {
-                throw new UnauthorizedException("用户不存在或密码错误");
-            }
-
-            String password = loginInfo.getCredential();
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (!encoder.matches(password, userCredential.getCredential()))
-            {
-                throw new UnauthorizedException("用户不存在或密码错误");
-            }
-
-            //TODO
-            if (userCredential.getStatus() == 0)
-            {
-                throw new UnauthorizedException("用户被锁定");
-            }
-        }
         else
         {
             throw new ParamInvalidException("登录类型错误");
         }
+
     }
 
     private String getLoginIp()

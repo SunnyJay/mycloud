@@ -2,7 +2,6 @@ package com.tangyuan.service;
 
 import com.tangyuan.domain.*;
 import com.tangyuan.exception.NotFoundException;
-import com.tangyuan.exception.ParamInvalidException;
 import com.tangyuan.repository.UserCredentialRepository;
 import com.tangyuan.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
@@ -59,27 +58,14 @@ public class UserService
     }
 
 
-    public User addUser(String openId, LoginInfo loginInfo) throws ParamInvalidException
+    public User addUser(String openId, LoginInfo loginInfo)
     {
         User user = new User();
         String userId = UUID.randomUUID().toString().replace("-", "");
         user.setId(userId);
         user.setWxOpenId(openId);
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
-
-        if (loginInfo.getIdentityType() == IdentityType.PHONE_AND_PASS.getType()
-                || loginInfo.getIdentityType() == IdentityType.PHONE_AND_SMS_CODE.getType())
-        {
-            user.setPhone(loginInfo.getIdentifier());
-        }
-        else if (loginInfo.getIdentityType() == IdentityType.EMAIL_AND_PASS.getType())
-        {
-            user.setEmail(loginInfo.getIdentifier());
-        }
-        else
-        {
-            throw new ParamInvalidException("登录类型错误");
-        }
+        user.setPhone(loginInfo.getIdentifier());
 
         userRepository.save(user);
 

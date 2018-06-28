@@ -58,7 +58,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter
         String tokenInfo = redisTemplate.opsForValue().get(token);
         if (!redisTemplate.hasKey(token) || tokenInfo == null)
         {
-            throw new UnauthorizedException("token过期");
+            throw new UnauthorizedException("未登录");
         }
 
         //设置userId到request里，后续根据userId，获取用户信息

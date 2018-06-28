@@ -22,7 +22,7 @@ Page({
     var that = this;
     console.log(that.data.id)
     wx.request({
-      url: 'http://127.0.0.1:8801/tangyuan/api/account/users/' + that.data.id,
+      url: 'http://127.0.0.1:8808/tangyuan/api/account/users/' + that.data.id,
       method: 'GET',
       header: {
         'content-type': 'application/json', // 默认值

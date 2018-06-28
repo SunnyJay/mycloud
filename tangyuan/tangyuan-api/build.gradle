@@ -1,0 +1,10 @@
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.4.RELEASE'
+    compile project(":tangyuan-base")
+
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+mainClassName = "com.tangyuan.MangeApplication"
